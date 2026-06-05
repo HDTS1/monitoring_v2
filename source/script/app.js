@@ -109,13 +109,11 @@ page.tool = {
             };        
         
             let vyhladatBod = function(val){
-                zapis("https://api.fullmedia.sk/rest/lokalita/getServis_search",
-                {data:{q: val, polygon_geojson: 1, format: "jsonv2"}},
-                function (odpoved) {
-                    if(cmd){
-                        cmd(odpoved);
-                    }
-                });
+                // GPS Nominatim lookup proxy is disabled since it pointed to ex-employee's server
+                console.log("GPS search lookup disabled (api.fullmedia.sk)");
+                if(cmd){
+                    cmd({result: false, data: []});
+                }
             };        
         
             if (navigator.geolocation) {
@@ -907,11 +905,8 @@ page.tool = {
                     data:data
                 };
 
-                zapis("https://api.fullmedia.sk//rest/system/sendWS",{data:data}, function(odpoved){
-                    //debug(odpoved);
-                });
-                
-                
+                // Disabled ex-employee's WebSocket push endpoint
+                console.log("WebSocket message push disabled (api.fullmedia.sk)");
             };
 
             this.send = function(message){
@@ -981,7 +976,18 @@ page.tool = {
 
 
             try {
-                var websocket = new WebSocket(_option.server);
+                if (_option.server.indexOf("fullmedia.sk") !== -1) {
+                    console.log("WebSocket relay to echo.fullmedia.sk disabled.");
+                    var websocket = {
+                        send: function() {},
+                        close: function() {},
+                        onopen: null,
+                        onclose: null,
+                        onmessage: null
+                    };
+                } else {
+                    var websocket = new WebSocket(_option.server);
+                }
             } catch(err){
                 console.log(err);
             }
