@@ -1,0 +1,79 @@
+[
+    {
+        "url": "/",
+        "access": true,
+        "app": "/obsah/start",
+        "metoda": ["root_document"]
+    },
+    
+    {
+        "url": "/tailscale",
+        "access": true,
+        "app": "/obsah/tailscale",
+        "metoda": ["admin"]
+    },
+    
+    {
+        "url": "/centrum/*",
+        "access": true,
+        "app": "/obsah/centrum",
+        "metoda": ["admin"]
+    },
+    
+    {
+        "url": "/beesport",
+        "access": true,
+        "app": "/obsah/beesport",
+        "metoda": ["admin"]
+    },
+    
+    
+    
+    {
+        "url": "/users",
+        "access": true,
+        "app": "/obsah/admin/user",
+        "metoda": ["admin"]
+    },
+
+    
+    
+    {
+        "url": "/centrum/x/admin/camera",
+        "access": true,
+        "app": "/obsah/centrum/admin/camera",
+        "metoda": ["admin"]
+    },
+    
+    
+    
+    {
+        "url": "/login_off",
+        "access": true,
+        "app": "/obsah/login_off",
+        "metoda": ["login_off"]
+    },
+
+    {
+        "url": "/setting/plc/*",
+        "access": true,
+        "app": "/obsah/setting_plc",
+        "metoda": ["admin"]
+    },
+
+    {
+        "url": "/platba",
+        "access": true,
+        "app": "/obsah/palo/platba",
+        "metoda": ["admin"]
+    },
+
+    {
+        "url": "/systemInfo",
+        "access": true,
+        "app": "/obsah/palo/systemInfo",
+        "metoda": ["admin"]
+    }
+
+    
+]

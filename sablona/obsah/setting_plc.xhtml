@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+
+    
+    
+    
+    <style cmd="base64">
+
+        div.prikaz {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            padding: 3px 5px 3px 5px;
+            margin: 3px 0px 5px 0px;
+        }
+        
+        div.prikaz > div {
+            padding: 0px 3px 0px 3px;
+            min-width: 50px;
+        }
+        
+        div.prikaz > i {
+           min-width: 40px;
+           padding: 0px 5px 0px 10px;
+           opacity: 0.25;
+           cursor: pointer;
+        }
+        
+        div.prikaz[select='1'] > i {
+           color: orangered;
+           opacity: 1;
+
+        }
+        
+        
+        
+        div.pocet {
+            display: flex;
+            justify-content:flex-end;
+        }
+        
+        div.pocet > div {
+            min-width: 30px;
+        }
+        
+        div.check-select {
+            display:  grid;
+            grid-template-columns: auto 1fr;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 10px 5px 5px;
+            margin-bottom: -1px;
+            border-radius: 5px;
+        }
+        
+        div.check-select i.bi {
+            min-width: 30px;
+            padding: 0px 5px 0px 10px;
+            opacity: 0.25;
+            cursor: pointer; 
+        }
+        
+        div.check-select[select="1"] i.bi {
+           color: orangered;
+           opacity: 1;
+           text-shadow: 0px 0px 6px rgba(255,255,255,0.6);
+        }
+        
+        
+        div.check-select[access="R"] i.bi {
+           cursor: inherit;
+           pointer-events: none;
+           color: #0c7ed7;
+        }
+        
+        div.check-select[select="1"][access="R"] i.bi {
+           color:  #0c7ed7;
+           opacity: 1;
+           cursor: inherit;
+           pointer-events: none;
+           text-shadow: 0px 0px 6px rgba(255,255,255,0.6);
+        }
+        
+        div.check-select[access="R"] {
+            /* display: none; */
+        }
+        
+        
+    </style>
+
+
+    
+    
+    <setting node="menu_breadcrumb">
+        <item1>
+            <link>/</link>
+            <label>Home</label>
+        </item1>
+        
+    </setting>
+
+    <component source="/component/breadcrumb" />
+    <component source="/component/logged_user" />
+
+    
+    <div class="container">
+        <getRest node="plc">
+            <trieda>monitor.settingPLC</trieda>
+            <parameter>
+                <base_plc>{{route.url.2}}</base_plc>
+            </parameter>
+        </getRest>
+        
+        <getRest node="status">
+            <trieda>monitor.getStatus</trieda>
+        </getRest>
+        
+        <getRest node="plan">
+            <trieda>monitor.settingPlan</trieda>
+            <parameter>
+                <base_plc>{{route.url.2}}</base_plc>
+            </parameter>
+        </getRest>
+        
+
+        
+
+        
+
+        <div plc_data="{{plc}}" class="h3"><b>{{plc.data.label}}</b></div>
+        <div class="alert alert-danger" role="alert">
+            <div><i class="bi bi-question-square-fill p-1"> Opatrne tu treba vediet co robit ....</i></div>
+        </div>
+
+        
+        <if data="plan">
+            <div class="alert alert-success" role="alert">
+                <div><i class="bi bi-question-square-fill p-1"> Je pripraveny plan pre toto PLC, chcete nacitat jeho data ?</i></div>
+                <div style="min-height: 20px" />
+                <div class=" text-end">
+                    <button class="btn btn-success" style="min-width: 240px" data="{{plan}}" onclick="page.plc_setting.load(this)">Nacitat data</button>
+                </div>
+            </div>
+        </if>
+        
+        <div class="prikaz" select="0" prikaz="RSI" value="x">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div>Vynulovanie servisného indikátora (po kritickom alarme alebo vykonaní servisu)</div>
+        </div>
+        
+        <div class="prikaz" select="0" prikaz="REC" value="x">
+            <i class="bi bi-check-square-fill  prikaz"></i>
+            <div>Nastavenie aktuálnych hodnôt motohodín, vzdialenosti a dátumu do počítadiel servisného intervalu</div>
+        </div>
+        
+        
+        <div class="prikaz" select="0" prikaz="YSM"  value="pocet">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div>
+                <div>Posun obmedzenia rýchlosti trenažéra bez vykonaného servisu- nastaviť počet dní</div>
+                <div class="pocet" min="1" max="30" value="1">
+                    <div class="text-center" style="cursor: pointer"><i class="bi bi-dash-circle-fill"></i></div>
+                    <div class="text-center">1</div>
+                    <div class="text-center"  style="cursor: pointer"><i class="bi bi-plus-circle-fill"></i></div>
+                </div>    
+            </div>
+            
+        </div>
+        
+        <div  class="prikaz" select="0" prikaz="NSW"  value="word">
+            <i class="bi bi-check-square-fill  prikaz"></i>
+            <div style="padding-bottom: 15px">
+                <div style=" padding-bottom: 5px">Nastavenie generovania alarmov a eventov:</div>
+                
+                
+                <for data="status">
+                    <div kluc="{{kluc}}" select="0" access="{{access}}" class="check-select">
+                        
+                        <div style=" padding-right: 10px">
+                            <i class="bi bi-check-square-fill"></i>
+
+                        </div>
+                        
+                        <div><span> {{popis}} </span></div>
+
+                        
+                    </div>
+                </for>
+            </div>
+
+        </div>
+        
+
+        <div class="prikaz" select="0" prikaz="NTL"  value="pocet">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div>
+                <div>Nastavenie teplotného limitu- nastaviť stupne Celzia</div>
+                <div class="pocet" min="25" max="30" value="25">
+                    <div class="text-center" style="cursor: pointer"><i class="bi bi-dash-circle-fill"></i></div>
+                    <div class="text-center">25</div>
+                    <div class="text-center"  style="cursor: pointer"><i class="bi bi-plus-circle-fill"></i></div>
+                </div>    
+            </div>
+            
+        </div>
+        
+        <div class="prikaz" select="0" prikaz="NPE"  value="pocet">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div>
+                <div>Aktivácia udalosti "Platba"- splatnosť aktuálny dátum + nastavený počet dní</div>
+                <div class="pocet" min="1" max="30" value="1">
+                    <div class="text-center" style="cursor: pointer"><i class="bi bi-dash-circle-fill"></i></div>
+                    <div class="text-center">1</div>
+                    <div class="text-center"  style="cursor: pointer"><i class="bi bi-plus-circle-fill"></i></div>
+                </div>    
+            </div>
+            
+        </div>       
+        
+        <div class="prikaz" select="0" prikaz="PLM"  value="pocet">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div>
+                <div>Posun obmedzení trenažéra po termíne platby o nastavený počet dní</div>
+                <div class="pocet" min="1" max="30" value="1">
+                    <div class="text-center" style="cursor: pointer"><i class="bi bi-dash-circle-fill"></i></div>
+                    <div class="text-center">1</div>
+                    <div class="text-center"  style="cursor: pointer"><i class="bi bi-plus-circle-fill"></i></div>
+                </div>    
+            </div>
+            
+        </div>
+        
+
+        
+        <div  class="prikaz" select="0" prikaz="PDC"  value="x">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div>Deaktivácia udalosti "Platba"</div>
+        </div>
+        
+        
+        <div  class="prikaz" select="0" prikaz="CIP"  value="server">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div style=" display:  grid; grid-template-columns: 1fr auto">
+                <div>Socket server</div>
+                <div>
+                    <select class="custom-select" value="{{plc.data.socket_server}}">
+                        
+                        <option value="188.245.82.73">HDTS: 188.245.82.73</option>
+                        <option value="37.27.222.100">HDTS Test: 37.27.222.100</option>
+                       
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div  class="prikaz" select="0" prikaz="CTI"  value="interval">
+            <i class="bi bi-check-square-fill prikaz"></i>
+            <div style=" display:  grid; grid-template-columns: 1fr auto">
+                <div>Nastavenie intervalu pristupu v minutach</div>
+                <div>
+                    <select class="custom-select" value="{{plc.data.socket_interval}}" style=" min-width: 100px">
+                        
+                        <option value="2">2</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="60">60</option>
+                        <option value="120">120</option>
+                        <option value="180">180</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- 
+         <option value="195.210.28.152">DEBUG: 195.210.28.152</option>
+        -->
+        
+        
+        <div style=" min-height: 25px"/>
+        <div >
+            <div class="text-end"><button class="btn btn-primary " style="min-width:280px; " item="zapis">Naplanovat nastavenie</button></div>
+        </div>
+
+    </div>
+
+    <script cmd="base64" src="setting_plc.js" />
+    <script cmd="base64">
+        
+        // page.menu.addMenu("Pridat centrum", "/centrum/add", "/assets/svg/person.svg", "--bee-player-card");
+        /*
+        page.menu.addMenu("Add test plan", "javascript:page.start.createItem.test_plan()", "/assets/svg/person.svg");
+        page.menu.addMenu("Add training plan", "javascript:page.start.createItem.training_plan()", "/assets/svg/person.svg");
+
+         */
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

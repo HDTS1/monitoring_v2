@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    
+    <div item="form" >
+    
+    <style cmd="base64">
+        label.frm-label {
+            color: gray;
+        }
+        
+        label.frm-label::after{
+            background: inherit !important;
+        }
+        .form-floating input {
+            background:  whitesmoke;
+        }
+        
+        .form-floating select {
+            background:  whitesmoke;
+        }
+        
+
+    </style>
+    
+    
+    
+    <div>
+        <div class="form-floating mb-2" >
+            <input type="date" class="form-control "   placeholder="Date from" data-item="date.from" test="hodnota" value="2024/11/10" />
+          <label  class="frm-label">Date from</label>
+        </div>
+    </div>
+    
+    <div>
+        <div class="form-floating mb-2" >
+          <input type="date" class="form-control "   placeholder="Date to" data-item="date.to" test="hodnota" />
+          <label  class="frm-label">Date to</label>
+        </div>
+    </div>
+        
+        
+
+    <div style=" min-height: 15px" />
+    
+    <div>
+        <button class="btn btn-primary w-100" item="cmd">Set Range</button>
+    </div>
+    
+</div>
+</div>

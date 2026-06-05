@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <style cmd="base64">
+        div.event_zoznam {
+            font-size: 80%;
+            font-family: sans-serif;
+        }
+        
+        
+         div.event_zoznam > div:not(:first-child) {
+             cursor: pointer;
+             transition: all 0.3s;
+        }
+        
+        
+        div.event_zoznam > div > div {
+            display: grid;
+            grid-template-columns: 5fr 2fr 2fr 2fr 2fr 2fr;
+            background: rgba(255,255,255,0.1);
+            
+            padding: 3px 5px 3px 5px;
+            border-bottom: 1px dotted rgba(255,255,255,0.3);
+            
+        }
+        
+        div.event_zoznam > div > div > div {
+            padding-left: 5px;
+        }
+
+        
+        div.event_zoznam > div:not(:first-child):hover {
+            background: rgba(200,0,0,0.4);
+            transition: all 0.3s;
+        }
+        
+
+        
+        
+
+        
+    </style>
+    
+    <script cmd="base64">
+        page.history_record = {
+            getZaznam: function(el){
+                let id_model = $(el).attr("id_model");
+                
+                page.start.setCanvas("history_record_zaznam",{
+                    title: "History record",
+                    template: "/canvas/monitor/record_zaznam",
+                    data: {
+                        id_model: id_model
+                    }
+                });
+            }
+        }
+    </script>
+    
+    
+    <getRest node="h">
+        <trieda>monitor.plc_event</trieda>
+        <parameter>
+            <plc>{{plc}}</plc>
+        </parameter>
+    </getRest>
+    
+    <div><b>{{plc}}</b></div>
+    <hr/>
+    
+    <div class="event_zoznam">
+        <div>
+            <div>
+                <div>time</div>
+                <div>interval</div>
+                <div >event</div>
+                <div class="text-center" >total</div>
+                <div class="text-center" >cycle</div>
+                <div class="text-center" >runtime</div>
+            </div>
+        </div>
+        <div style="min-height: 1px; background: rgba(200,0,0,0.8); margin: 0; padding: 0"/>
+        
+        <for data="h">
+            <div alarm_state="{{alarm_state}}" id_model="{{id_model}}" onclick="page.history_record.getZaznam(this)">
+                <div>
+                    <div><date format="y-m-d H:i">{{cas_create}}</date></div>
+                    <div class=" text-end"><number format="#,##0">{{diff}}</number></div>
+                    <div class="text-center">{{event}}</div>
+                    <div class=" text-end"><number format="#,##0">{{km}}</number></div>
+                    <div class=" text-end"><number format="#,##0">{{cycle_count}}</number></div>
+                    <div class=" text-end"><number format="#,##0">{{run_time}}</number></div>
+                </div>
+            </div>
+            
+            
+        </for>
+    </div>
+
+
+</div>

@@ -1,0 +1,11 @@
+# Environment variables
+.env
+
+# Large database dumps in root
+/hdts_monitor.sql
+/hdtc_users.sql
+
+# OS/IDE files
+.DS_Store
+.vscode/
+.idea/

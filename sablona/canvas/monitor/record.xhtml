@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+        <style cmd="base64">
+            button[state='0']{
+                opacity: 0.2;
+                text-decoration:  line-through;
+            }
+        </style>
+    
+    
+    
+        <component source ="/canvas/monitor/record_zaznam" />
+
+        
+        <div style=" min-height: 15px" />
+        <button class="btn btn-secondary w-100" id="history_event" plc="{{plc.data.label}}">History PLC</button>
+
+
+        
+        <div style=" min-height: 15px" />
+        
+        <a class="btn btn-secondary w-100" href="/setting/plc/{{plc.data.base64_name}}">Setting PLC</a>
+        <div style=" min-height: 15px" />
+        
+        <script cmd="base64" src="record.js"></script>
+        
+        
+</div>

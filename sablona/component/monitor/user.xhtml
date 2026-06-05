@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div style="padding: 15px; border: 1px solid gray; border-radius: 10px; margin: 10px; box-shadow: 0px 0px 5px rgba(255,255,255,0.5); " id="container_active_user">
+    
+    <style cmd="base64">
+        .user_log {
+            display: grid;
+            font-size: 80%;
+            grid-template-columns: minmax(80px, 80px) 1fr 3fr;
+            background: rgba(255,255,255,0.1);
+            margin: 0px 0px -1px 0px;
+            border-radius: 5px;
+        }
+       
+        
+        .user_log > div {
+            padding: 2px 3px 2px 3px;
+        }
+    </style>
+    
+    
+    
+    <getRest node ="access">
+        <trieda>user.lastAcess</trieda>
+    </getRest>
+    
+    
+    <div class="p-1" style="color: rgba(255,255,255,0.6)">Active user, last access</div>
+    <div style="padding: 10px">
+        <div id="user_active" class="row">
+            <for data="access">
+                <div class="col-12 p-0"><div class="user_log"><div><date format="H:i:s">{{date_time}}</date></div><div>{{username}}</div><div style=" overflow:  hidden; text-overflow: ellipsis;">{{url}}</div></div></div> 
+            </for>
+        </div>
+    </div>
+    
+  
+    
+    <script cmd="base64" src="user.js"/>  
+</div>

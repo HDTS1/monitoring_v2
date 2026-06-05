@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    
+    
+    
+    <style cmd="base64">
+        canvas#myChart {
+         width: 100%;     /* Nastaví šírku na 100 % rodičovského prvku */
+         min-width: 0 important!;    /* Odstráni predvolenú minimálnu šírku */
+         height: 400px;   /* Príkladová výška */
+       }
+    </style>
+
+    <div class="col-title">Temperature over the past 48 hours</div>
+
+
+    <div class="border-radius">
+        <div class="text-end">Actual temperature: 16°</div>
+
+        <div class="chart-container container"   >
+            <canvas id="myChart" />
+        </div>
+    </div>
+    
+    <script cmd="base64" src="teplota.js"/>  
+    
+</div>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="onlineCamera" >
+    
+    <link href="//vjs.zencdn.net/8.19.2/video-js.min.css" rel="stylesheet"/>
+    
+    <div style=" min-height: 50px" />
+    <div class="row">
+        <div class="col-12 p-0">
+            <data id="setCamera" data="{{plc.camera}}"/>
+            
+            
+
+            
+
+            <div style=" min-height: 4px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative; border-radius: 2px;">
+                <div style=" position: absolute; color: rgba(255,255,255,0.2); bottom: 5px">Camera live ...</div>
+            </div>
+            <div style="min-height: 2px" />
+            
+            <div style=" position: relative;  padding-top: 56.25%; width: 100%; overflow:  hidden; border: 2px rgba(255,255,255,0.2) solid; border-radius: 5px">
+
+ 
+                
+                <div style="position: absolute; top: 0%; left: 0%; right: 0%; bottom: 0%; overflow: hidden  ">
+                    <video id="video"  class="video-js vjs-default-skin" preload1="auto" muted="muted"  playsinline="playsinline" controls="controls"  style="width:100%; height: 100%"  data-setup="{}">
+                        <p>Váš prehliadač nepodporuje prehrávanie HLS videa.</p>
+                    </video>
+                </div>
+
+                <!--
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.2); ">
+                    <div class="p-3 d-flex">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+
+                        <div  style=" padding-left: 25px">Please wait, I'm setting up the online stream. ....</div>
+                    </div>
+                </div>
+                -->
+                
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.2); " class="play_camera">
+                    <img src="/source/image/hdts_logo_bg.jpg" style=" width: 100%"/>
+                    <div id="clickPlay" style="position: absolute; right: 10px; bottom: 10px;"><i class="bi bi-play-circle" style="  font-size: 150%; color: rgba(255,255,255,0.8)"> Click to play ....</i> </div>
+                    <div id="clickWait" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.2); display: none ">
+                        <div class="p-3 d-flex">
+                            <div class="spinner-border text-light" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+
+                            <div  style=" padding-left: 25px">Please wait, I'm setting up the live stream. ....</div>
+                        </div>
+                    </div>
+                </div>                  
+                
+            </div>
+            
+  
+            
+        </div>
+    </div>
+    
+    
+
+    <script src="//vjs.zencdn.net/8.19.2/video.min.js"></script>
+    <script src="/source/script/hls.js" cmd="base64"></script>
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
+    -->
+    
+    <script cmd="base64" src="camera.js" />
+    
+</div>  

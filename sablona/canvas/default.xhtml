@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+
+    <style cmd="base64">
+        :root {
+            --b-color-pp:var(--b-color-orange);
+        }
+        
+        .pp-grid {
+            min-height: 100%;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 100%;
+            color: white;
+            
+        }
+        
+    </style>
+    
+    
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="menuCanvas"  aria-labelledby="xxx">
+        <div class="offcanvas-header" style=" background: var(--b-color-pp)">
+            <h5 class="offcanvas-title" style="color:white" >Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="menuLine" style=" transform:  translate(0px, 0px);"></div>
+        <div class="offcanvas-body" style=" background: var(--b-color-darkgray); color: white">
+            
+            
+            <div class="menu-container">
+                <div class="row">
+                    <for data="menu_canvas">
+                        <div class="col-6   p-0">
+                            <component source="/component/menu/item" />
+                        </div>    
+                    </for>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+    
+    
+    <div class="offcanvas offcanvas-top" tabindex="-1" id="menuCanvasTop"  aria-labelledby="xxx">
+        <div class="offcanvas-header" style=" background: var(--b-color-pp)">
+            <h5 class="offcanvas-title" >{{label}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="menuLine" style=" transform:  translate(0px, 0px);"></div>
+        <div class="offcanvas-body" style=" background: var(--b-color-darkgray)">
+
+        </div>
+    </div>
+    
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="menuCanvasStart"  aria-labelledby="xxx">
+        <div class="offcanvas-header" style=" background: var(--b-color-pp); color: white">
+            <h5 class="offcanvas-title" >List Group</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="menuLine" style=" transform:  translate(0px, 0px);"></div>
+        <div class="offcanvas-body" style=" background: var(--b-color-darkgray); color: white">
+            xxx
+        </div>
+    </div>
+    
+</div>

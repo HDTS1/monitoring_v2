@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div style="padding: 15px; border: 1px solid gray; border-radius: 10px; margin: 10px; box-shadow: 0px 0px 5px rgba(255,255,255,0.5); background: rgba(255,255,255,0.1) ">
+    
+
+    <style cmd="base64">
+        div.tailscale-component {
+            background: rgba(255,255,255,0.1);
+            font-size: 80%;
+            margin: 3px 0px 3px 0px;
+            display: grid;
+            grid-template-columns: 20px 1fr;
+            border-radius: 5px;
+            overflow:  hidden;
+        }
+        
+        div.tailscale-component > div:first-child {
+            background: rgba(200,100,0,0.8);
+            min-width: 100%;
+        }
+        
+        div.tailscale-component > div:first-child[state='1'] {
+            background: rgba(0,180,0,0.7);
+        }
+        
+        div.tailscale-component >div:nth-child(2) {
+            padding: 3px 5px 3px 15px;
+        }
+        
+        div.tailscale-component > div div.dostupnost-button {
+            position: relative;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        div.tailscale-component > div div.dostupnost-button > div {
+            position: absolute;
+            right: -3px;
+            top: -3px;
+        }
+        
+        
+        div.tailscale-component:hover > div div.dostupnost-button {
+            opacity: 1;
+            transition: all 0.3s;
+        }
+        
+        
+    </style>
+
+    
+    <getRest node="list">
+        <trieda>tailscale.test</trieda>
+    </getRest>
+    
+    
+    <div class="p-1" style="color: rgba(255,255,255,0.6)">Tailscale network</div>
+    <div style="padding: 5px">
+        
+        
+        
+        <for data="list.devices">
+
+        <div class="tailscale-component"  >
+
+
+            <div state="2" >
+
+            </div>
+
+            <div kluc="{{id}}">
+                
+                <div class="dostupnost-button">
+                    <div><button class="btn btn-primary " onclick="alert('Funkcia nie je povolena')">Overit okamzitu dostupnost</button></div>
+                </div>
+
+                <div style="padding: 3px 0px 3px 0px"><b>{{name}} </b><span> ({{os}})</span></div>
+
+
+                <div>{{addresses}}</div>
+
+            </div>
+    
+    
+
+    
+
+</div>
+
+        </for>
+    </div>
+
+    
+    <!--
+    <script cmd="base64" src="service.js"/>  
+    -->
+  
+</div>

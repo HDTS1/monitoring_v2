@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div class="container">
+    <style cmd="base64">
+        .b-user {
+            padding-top: 8px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+        }
+
+        .b-user > div > div:nth-child(1) {
+            padding: 8px 5px 0px 0px;
+        }
+
+        .b-user > div:nth-child(2):hover {
+            cursor: pointer;
+        }
+
+        .icon-user {
+            padding-right: 6px;
+        }
+    </style>
+
+    <div class="b-user align-items-center">
+        
+        <!--
+        
+        <div style="margin-left: 0.75rem;">Centrum: Kingston center (Example)</div>
+        -->
+        
+        <div></div>
+        
+
+        <getRest node="user">
+            <trieda>user.getUserData</trieda>
+        </getRest>
+        
+        <div 
+            class="d-flex flex-row"
+            onclick="page.start.cmdEvent('clicked_on_user', {el:this})"
+        >
+            <div>{{user.data.username}}</div>
+            <div class="icon-user">
+                <i class="bi bi-person" style="font-size: 24px"></i>
+            </div>
+        </div>
+    </div>
+</div>

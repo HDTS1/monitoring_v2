@@ -1,0 +1,122 @@
+services:
+
+  # ── Web Application (PHP 8.2 + Apache) ─────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hdts_app
+    restart: unless-stopped
+    environment:
+      # Primary MySQL database (PLC data, device registry, etc.)
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASSWORD}
+      DB_NAME: hdts_monitor
+      # Users database (separate DB, same MySQL instance)
+      DB_USERS_HOST: db
+      DB_USERS_PORT: 3306
+      DB_USERS_USER: ${MYSQL_USER}
+      DB_USERS_PASS: ${MYSQL_PASSWORD}
+      # Memcached
+      MEMCACHED_HOST: memcached
+      MEMCACHED_PORT: 11211
+      # Tailscale API (if you use the tailscale route)
+      TAILSCALE_TAILNET: ${TAILSCALE_TAILNET:-}
+      TAILSCALE_TOKEN: ${TAILSCALE_TOKEN:-}
+      # SMTP (PHPMailer) - for login verification emails
+      SMTP_HOST: ${SMTP_HOST:-smtp.purelymail.com}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_FROM: ${SMTP_FROM:-}
+      # DeepL translation (optional)
+      DEEPL_API_KEY: ${DEEPL_API_KEY:-}
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:80"
+    depends_on:
+      db:
+        condition: service_healthy
+      memcached:
+        condition: service_started
+    volumes:
+      # Persist uploaded files / camera snapshots if any
+      - app_uploads:/var/www/html/assets/camera
+    networks:
+      - hdts_net
+
+  # ── Cron (maintenance tasks) ────────────────────────────────────────────────
+  cron:
+    build:
+      context: .
+      dockerfile: docker/cron/Dockerfile
+    container_name: hdts_cron
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASSWORD}
+      DB_NAME: hdts_monitor
+      DB_USERS_HOST: db
+      DB_USERS_PORT: 3306
+      DB_USERS_USER: ${MYSQL_USER}
+      DB_USERS_PASS: ${MYSQL_PASSWORD}
+      MEMCACHED_HOST: memcached
+      MEMCACHED_PORT: 11211
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - hdts_net
+
+  # ── MySQL 8.0 ────────────────────────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: hdts_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      # Note: MYSQL_DATABASE creates only ONE db automatically.
+      # Both databases are created by docker/mysql/init/00_create_dbs.sql
+      MYSQL_DATABASE: hdts_monitor
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro,z
+    ports:
+      # Only expose to localhost; remove this if you don't need external access
+      - "127.0.0.1:${DB_EXTERNAL_PORT:-33060}:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
+      --default-time-zone=Europe/Bratislava
+    networks:
+      - hdts_net
+
+  # ── Memcached ────────────────────────────────────────────────────────────────
+  memcached:
+    image: memcached:1.6-alpine
+    container_name: hdts_memcached
+    restart: unless-stopped
+    command: memcached -m 128
+    networks:
+      - hdts_net
+
+volumes:
+  db_data:
+    driver: local
+  app_uploads:
+    driver: local
+
+networks:
+  hdts_net:
+    driver: bridge

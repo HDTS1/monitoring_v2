@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <div>
+        <getRest node="plc_data">
+            <trieda>monitor.plc</trieda>
+            <parameter>
+                <filter>{{plc}}</filter>
+            </parameter>
+        </getRest>
+        
+    <getRest node="plc_data_record">
+        <trieda>monitor.getPLCRecord</trieda>
+        <parameter>
+            <kluc>{{plc_data.0.id_model}}</kluc>
+        </parameter>
+    </getRest>
+        
+
+
+        <div class="one-col" style=" margin-top: 5px">
+            <div>
+                <div>{{label}}</div>
+                <div class="col-date">{{plc_data_record.model.cas_create}}</div> 
+            </div>
+
+            <div>
+                <div class="col-title">Total values</div>
+                <div class="border-radius">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="parameter-name">Distance (km)</div>
+                            <div class="parameter-value">{{plc_data_record.data.total_distance}}</div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="parameter-name">Cycle count</div>
+                            <div class="parameter-value">{{plc_data_record.data.cycle_count}}</div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="parameter-name">Runtime (h)</div>
+                            <div class="parameter-value">{{plc_data_record.data.run_time}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="col-title">Next service</div>
+                <div class="border-radius">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="parameter-name">Days</div>
+                            <div class="parameter-value">{{plc_data_record.data.pocet_dni_do_servis}}</div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="parameter-name">Engine Hours</div>
+                            <div class="parameter-value">{{plc_data_record.data.pocet_moto_hod_do_servis}}</div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="parameter-name">Distance (km)</div>
+                            <div class="parameter-value">{{plc_data_record.data.zostavajuca_vzdialenost_do_servis}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="col-title">PTFE</div>
+                <div class="border-radius">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="parameter-name">Greasing cycle counter</div>
+                            <div class="parameter-value">{{plc_data_record.data.ptfe_pocitadlo_mazacich_cyklov}}</div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="parameter-name">Greasing date</div>
+                            <div class="parameter-value">{{plc_data_record.data.ptfe_datum}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+    </div>
+</div>

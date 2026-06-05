@@ -1,0 +1,6 @@
+.env
+*.sql
+hdts_monitor.sql
+hdtc_users.sql
+.git
+node_modules

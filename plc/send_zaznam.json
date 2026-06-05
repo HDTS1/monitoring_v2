@@ -1,0 +1,45 @@
+{
+    "model": {
+        "id_model": "e29e8982-982c-11ef-96e2-00163ef25df0",
+        "model": "setPLC",
+        "cas_create": "2024-11-01 09:40:01",
+        "cas_update": "2024-11-01 09:40:01"
+    },
+    "data": {
+        "list_cmd": [{
+                "cmd": "RSI",
+                "type": "x",
+                "value": null
+            }, {
+                "cmd": "REC",
+                "type": "x",
+                "value": null
+            }, {
+                "cmd": "YSM",
+                "type": "pocet",
+                "value": "2"
+            }, {
+                "cmd": "NSW",
+                "type": "word",
+                "value": "0101010000000100"
+            }, {
+                "cmd": "NTL",
+                "type": "pocet",
+                "value": "25"
+            }, {
+                "cmd": "NPE",
+                "type": "pocet",
+                "value": "2"
+            }, {
+                "cmd": "PLM",
+                "type": "pocet",
+                "value": "2"
+            }, {
+                "cmd": "PDC",
+                "type": "x",
+                "value": null
+            }],
+        "plc": "PLC.SK.STU1.",
+        "valid": "1"
+    }
+}

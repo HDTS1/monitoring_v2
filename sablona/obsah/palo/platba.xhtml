@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div class="container">
+    
+    <getRest node="platba">
+        <trieda>system.getPlatba</trieda>
+    </getRest>
+    
+    
+    <div class="p-3">
+        <for data="platba">
+            <div style=" background: rgba(255,255,255,0.1); margin: 0px 0px 5px 0px; padding: 3px 10px 3px 10px">
+                <div class="row">
+                    <div class="col-6">
+                        <div>{{rok}} / {{mesiac}}</div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class=" text-end">{{zaplatene}} ({{dif}})</div>
+                    </div>
+
+                </div>
+            </div>
+        </for>
+    </div>
+
+
+    <script cmd="base64">
+        
+        page.menu.addMenu("Home", "/", "/assets/svg/person.svg", "--bee-player-card");
+
+    </script>
+
+</div>
+

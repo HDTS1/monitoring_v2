@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <div item="form">
+        <getRest node="list_camera">
+            <trieda>service.getCameraObject</trieda>
+            <parameter>
+                <server>{{server}}</server>
+            </parameter>
+        </getRest>
+        
+        <getRest node="list_stream">
+            <trieda>service.getCameraStream</trieda>
+            <parameter>
+                <server>{{server}}</server>
+            </parameter>
+        </getRest>
+        
+        
+    
+        
+        <div>
+            <div class="form-floating mb-2" >
+                <select class="form-select"  aria-label="" data-item="stream">
+                    <for data="list_stream.servers">
+                        <option value="{{ident}}">{{url}}</option>
+                    </for>
+                </select>
+
+              <label  class="frm-label">Select stream</label>
+            </div>
+        </div>
+        
+        <div>
+            <div class="form-floating mb-2" >
+                <select class="form-select"  aria-label="" data-item="id">
+                    <for data="list_camera">
+                        <option value="{{id}}">{{name}}</option>
+                    </for>
+                </select>
+
+              <label  class="frm-label">Select camera</label>
+            </div>
+        </div>
+        
+        <div style=" min-height: 15px" />
+        
+        <div>
+            <button class="btn btn-primary w-100" item="cmd">Select camera</button>
+        </div>
+        
+        
+
+    </div>
+</div>

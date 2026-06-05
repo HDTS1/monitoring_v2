@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <style cmd="base64">
+        div.plc-panel {
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            padding: 5px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 10px;
+            overflow:  hidden;
+        }
+        
+        div.plc-panel > div:first-child {
+            background: rgba(255,255,255,0.2);
+            margin: -5px -5px 10px -5px;
+            padding: 3px 10px 3px 10px;
+        }
+        
+        
+        
+        div.monitor-pole {
+            display:  grid;
+            grid-template-columns: auto 1fr;
+        }
+        
+        div.monitor-pole > div:first-child {
+            color:  rgba(255,255,255,0.6);
+        }
+        
+        div.monitor-pole > div:last-child {
+            text-align:  end;
+        }
+        
+        
+        div[alarm] {
+            opacity: 0.1;
+            padding: 3px 5px 3px 10px;
+            /* display: none; */
+        }
+        
+        div[alarm='1']{
+           opacity: 1; 
+           display: inherit;
+        }
+        
+        
+    </style>
+    
+    
+    
+    <getRest node="plc">
+        <trieda>monitor.plc</trieda>
+        <parameter>
+            <filter>{{name}}</filter>
+        </parameter>
+    </getRest>
+    
+    <div><b style="color:rgba(255,255,255,0.5)">({{plc.0.event.priznak}})</b> <b> {{plc.0.label}}</b></div>
+    <div style=" font-size: 80%">{{plc.0.data.model.cas_create}} <br/> (time: {{plc.0.data.time_difference_now}} minute old)</div>
+    <div class="plc-panel">
+        <div>Total values</div>
+        <div class="monitor-pole">
+            <div>Distance (km):</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.total_distance}}</number></div>
+        </div>
+        
+        <div class="monitor-pole">
+            <div>Run time (h):</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.run_time}}</number></div>
+        </div>
+        
+        <div class="monitor-pole">
+            <div>Cycle count:</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.cycle_count}}</number></div>
+        </div>
+        
+        
+    </div>
+    
+    
+    <div class="plc-panel">
+        <div>Next service</div>
+        <div class="monitor-pole">
+            <div>Days:</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.pocet_dni_do_servis}}</number></div>
+        </div>
+        
+        <div class="monitor-pole">
+            <div>Hours:</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.pocet_moto_hod_do_servis}}</number></div>
+        </div>
+        
+        <div class="monitor-pole">
+            <div>Distance (m):</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.zostavajuca_vzdialenost_do_servis}}</number></div>
+        </div>
+        
+        
+    </div>
+    
+    
+    <div class="plc-panel">
+        <div>Last run statistics</div>
+        <div class="monitor-pole">
+            <div>Speed (km/h):</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.rychlost_pasu}}</number></div>
+        </div>
+        
+        <div class="monitor-pole">
+            <div>Last distance:</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.ubehnuta_vzdialenost}}</number></div>
+        </div>
+        
+        <div class="monitor-pole">
+            <div>Angle :</div>
+            <div><number format="#.##0">{{plc.0.data.data.data.read.sklon_pas}}</number></div>
+        </div>
+        
+        
+    </div>
+    
+    <div style=" min-height: 15px" />
+    <button class="btn btn-secondary w-100" id="history_event" plc="{{plc.0.label}}">History event</button>
+    <div style=" min-height: 15px" />
+    
+    <div class="plc-panel">
+        <div>Alarm</div>
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.bezpecnostne_rele_vypnute}}">bezpecnostne_rele_vypnute</div>
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.chyba_frekvencneho_menica}}">chyba_frekvencneho_menica</div>
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.chyba_senzora_hladiny_vody_v_nadrzi}}">chyba_senzora_hladiny_vody_v_nadrzi</div>
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.chyba_vodneho_chladenia}}">chyba_vodneho_chladenia</div>
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.chyba_polohy_predneho_valca}}">chyba_polohy_predneho_valca</div>
+        
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.chyba_polohy_zadneho_valca}}">chyba_polohy_zadneho_valca</div>
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.chyba_internetovej_konektivity}}">chyba_internetovej_konektivity</div>
+        <div alarm="{{plc.0.data.data.data.read.alarm_word.vysoka_okolita_teplota}}">vysoka_okolita_teplota</div>
+        
+        
+    </div>
+    
+    <div class="plc-panel">
+        <div>Setting</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.jednotky_metric_imperial}}">jednotky_metric_imperial</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.kontrola_vodneho_chladenia}}">kontrola_vodneho_chladenia</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.kontrola_polohy_valcov}}">kontrola_polohy_valcov</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.kontrola_teploty_okolia}}">kontrola_teploty_okolia</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.automaticke_mazanie}}">automaticke_mazanie</div>
+        
+        <div alarm="{{plc.0.data.data.data.read.status_word.stvrtrocna_kontrola_trenazera}}">stvrtrocna_kontrola_trenazera</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.rocny_servis_trenazera}}">rocny_servis_trenazera</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.automaticky_naklon_vyp_zap}}">automaticky_naklon_vyp_zap</div>
+        
+        <div alarm="{{plc.0.data.data.data.read.status_word.trenazer_zap_vyp}}">trenazer_zap_vyp</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.poziadavka_rocneho_servisu_trenazera}}">poziadavka_rocneho_servisu_trenazera</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.obmedzena_rychlost_bez_rocneho_servisu}}">obmedzena_rychlost_bez_rocneho_servisu</div>
+        
+        <div alarm="{{plc.0.data.data.data.read.status_word.servisny_indikator_na_obrazovke}}">servisny_indikator_na_obrazovke</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.udalost_platba}}">udalost_platba</div>
+        <div alarm="{{plc.0.data.data.data.read.status_word.platba_obmedzenie_1}}">platba_obmedzenie_1</div> 
+        <div alarm="{{plc.0.data.data.data.read.status_word.platba_obmedzenie_2}}">platba_obmedzenie_2</div> 
+        
+    </div>
+    
+    <div style=" min-height: 25px" />
+    <button class="btn btn-secondary w-100" onclick="debug($.parseJSON($(this).attr('data')));" data="{{plc.0.data}}">Nespracovane data</button>
+    
+</div>

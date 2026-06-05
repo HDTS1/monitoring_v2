@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div style="padding: 15px; border: 1px solid gray; border-radius: 10px; margin: 10px; box-shadow: 0px 0px 5px rgba(255,255,255,0.5); ">
+    
+
+    <style cmd="base64">
+        div.service-component {
+            background: rgba(255,255,255,0.1);
+            font-size: 80%;
+            margin: 3px 0px 3px 0px;
+            display: grid;
+            grid-template-columns: 20px 1fr;
+            border-radius: 5px;
+            overflow:  hidden;
+        }
+        
+        div.service-component > div:first-child {
+            background: rgba(200,0,0,0.8);
+            min-width: 100%;
+        }
+        
+        div.service-component > div:first-child[state='1'] {
+            background: rgba(0,180,0,0.7);
+        }
+        
+        
+        div.service-component >div:nth-child(2) {
+            padding: 3px 5px 3px 15px;
+        }
+        
+        div.service-component > div div.dostupnost-button {
+            position: relative;
+            opacity: 0;
+            transition: all 0.5s;
+        }
+        
+        div.service-component > div div.dostupnost-button > div {
+            position: absolute;
+            right: -3px;
+            top: -3px;
+        }
+        
+        
+        div.service-component:hover > div div.dostupnost-button {
+            opacity: 1;
+            transition: all 0.5s;
+        }
+        
+    </style>
+
+    
+    <getRest node="service">
+        <trieda>service.listService</trieda>
+    </getRest>
+    
+    
+    <div class="p-1" style="color: rgba(255,255,255,0.6)">Monitoring services, devices</div>
+    <div style="padding: 5px">
+        <div id="list_service" >
+            <for data="service">
+                <component source="/component/monitor/service/service" data="model" />
+            </for>
+        </div>
+    </div>
+
+    
+
+    <script cmd="base64" src="service.js"/>  
+  
+</div>

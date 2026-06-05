@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <style cmd="base64">
+        table.record-table {
+            width: 100%;
+
+        }
+        
+        table.record-table tr {
+            background: rgba(255,255,255,0.1);
+            border-bottom: 1px dotted rgba(255,255,255,0.3);
+        }
+        
+        table.record-table tr > td {
+            padding: 3px 5px 3px 5px;
+        }
+        
+        table.record-table tr > td:first-child {
+            width: 60%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            /* white-space: nowrap; */
+        }
+        
+        table.record-table tr > td:last-child {
+            width: 40%;
+
+        }
+        
+        div.panelTable {
+            font-size: 90%;
+            font-family:  sans-serif;
+            border: 2px solid rgba(255,255,255,0.4);
+            padding: 5px;
+        }
+        
+        
+        div.panelTableGrid > div {
+            display:  grid;
+            grid-template-columns: 1fr auto;
+        }
+        
+        div.notify-alarm {
+            font-size: 80%;
+            padding: 5px 5px 10px 10px;
+        }
+        
+        div.notify-alarm > div {
+            display: none;
+        }
+        
+        
+        div.notify-alarm > div:before {
+            content: '\F10A';
+            color: rgba(200,0,0,0.8);
+            margin-right: 10px;
+            font-family: bootstrap-icons !important;
+            
+        }
+        
+        div.notify-alarm > div[select='1']{
+            display: inherit;
+        }
+        
+        
+        
+    </style>
+    
+    <getRest node="plc">
+        <trieda>monitor.getPLCRecord</trieda>
+        <parameter>
+            <kluc>{{id_model}}</kluc>
+        </parameter>
+    </getRest>
+    
+
+    
+    <div><b>{{plc.data.label}}</b></div>
+    <div style="font-size: 80%">
+        <div>{{plc.model.cas_create}}</div>
+    </div>
+    <div class="text-end"><font style=' color: rgba(255,255,255,0.6)'>event: </font> <b>{{plc.data.event}}</b></div>
+    <div style=" padding: 5px; background:  #214a5f; margin: 3px 0px 3px 0px"><i>{{plc.data.event_popis.popis}}</i></div>
+    
+    
+        <div class="panelTable">
+            <table  class="record-table">
+
+                <tr>
+                    <td>Total distance (km):</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.total_distance}}</number></td>
+                </tr>
+                
+                <tr>
+                    <td>Cycle count:</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.cycle_count}}</number></td>
+                </tr>
+                
+                <tr>
+                    <td>Engine hours (h):</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.run_time}}</number></td>
+                </tr>
+                
+                <!--
+                <tr>
+                    <td>Distance run:</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.ubehnuta_vzdialenost}}</number></td>
+                </tr>
+                -->
+                
+            </table>
+        </div>
+        
+        <div style="min-height:10px"/>
+    
+    
+        <div class="panelTable">
+             <div class="panelTableGrid">
+
+                
+                
+                <div>
+                    <div>Remaining days until next service:</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.pocet_dni_do_servis}}</number></div>
+                </div>
+                
+                <div>
+                    <div>Remaining engine hours until next service:</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.pocet_moto_hod_do_servis}}</number></div>
+                </div>
+                
+                <div>
+                    <div>Remaining distance until next service:</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.zostavajuca_vzdialenost_do_servis}}</number></div>
+                </div>
+                
+                <!--
+                <div>
+                    <div>Days remaining until speed restriction:</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.zostavajuce_dni_do_obmedzenia_rychlosti}}</number></div>
+                </div>
+                
+                
+                <div>
+                    <div>Due payment date:</div>
+                    <div class="text-end">{{plc.data.datum_pozadovanej_platby}}</div>
+                </div>
+                
+                <div>
+                    <div>Annual service date:</div>
+                    <div class="text-end">{{plc.data.rocny_servis_datum}}</div>
+                </div>
+                -->
+
+                
+                
+            </div>
+        </div>
+    
+        <div style="min-height:10px"/>
+        
+        <div class="panelTable">
+            <table  class="record-table">
+
+                <tr>
+                    <td>Automatic PTFE greasing cycle counter:</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.ptfe_pocitadlo_mazacich_cyklov}}</number></td>
+                </tr>
+
+                
+                <tr>
+                    <td>Last PTFE greasing date:</td>
+                    <td class="text-end">{{plc.data.ptfe_datum}}</td>
+                </tr>
+                
+
+                <!--
+                <tr>
+                    <td>Motor peak starting current:</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.prud_motora_max_rozbehovy}}</number></td>
+                </tr>
+                
+                <tr>
+                    <td>Motor average current:</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.prud_motora_priemerny}}</number></td>
+                </tr>
+                -->
+
+                
+                
+            </table>
+        </div>
+    
+        
+        
+        
+        <div style="min-height:10px"/>
+        
+        <div style=" padding: 5px;  background: lightgray;color: black; border-radius: 3px;">Last run parameters:</div>
+        <div class="panelTable">
+             <div class="panelTableGrid">
+
+                
+                
+                <div>
+                    <div>Belt speed (km/h):</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.rychlost_pasu}}</number></div>
+                </div>
+                
+                <div>
+                    <div>Belt slope (DEG):</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.sklon_pas}}</number></div>
+                </div>
+                
+                <div>
+                    <div>Distance (m):</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.ubehnuta_vzdialenost}}</number></div>
+                </div>
+                
+                
+                <div>
+                    <div>Motor peak current (mA):</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.prud_motora_max_rozbehovy}}</number></div>
+                </div>
+                
+                
+                <div>
+                    <div>Motor average current (mA):</div>
+                    <div class="text-end"><number format="#,##0">{{plc.data.prud_motora_priemerny}}</number></div>
+                </div>
+                
+                <div>
+                    <div>Speed change status:</div>
+                    <div class="text-end">{{plc.data.status_jazda}}</div>
+                </div>
+                
+
+                
+                
+            </div>
+        </div>
+        
+        
+        <div style="min-height:10px"/>
+        
+    
+        <div class="panelTable">
+            <div class="panelTableGrid">
+
+                
+                <div>
+                    <div>Alarm:</div>
+                    <div class="text-end" >{{plc.data.alarm_word}}</div>
+                    
+
+                    <!--
+                        Safety relay not ready
+                        VFD fault
+                        Water cooling sensor fault
+                        Water cooling fault
+                        Front drum fault
+                        Rear drum fault
+                        Internet conectivity fault
+                        Ambient temperature too high
+
+                    -->
+                    
+                </div>
+            </div>    
+            <div class="notify-alarm" alarm="{{plc.data.alarm_word}}">
+                        <div select="0">Safety relay not ready</div>
+                        <div select="0">VFD fault</div>
+                        <div select="0">Water cooling sensor fault</div>
+                        <div select="0">Water cooling fault</div>
+                        <div select="0">Front drum fault</div>
+                        <div select="0">Rear drum fault</div>
+                        <div select="0">Internet conectivity fault</div>
+                        <div select="0">Ambient temperature too high</div>
+            </div>    
+            <div class="panelTableGrid">    
+                <div >
+                    <div>Setting:</div>
+                    <div class="text-end">{{plc.data.status_word}}</div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        <div style="min-height:10px"/>
+        
+        
+        <div class="panelTable">
+            <table  class="record-table">
+
+                
+                <tr>
+                    <td>Last request service date:</td>
+                    <td class="text-end">{{plc.data.rocny_servis_datum}}</td>
+                </tr>
+                
+                <tr>
+                    <td>Days remaining unitil speed restriction:</td>
+                    <td class="text-end"><number format="#,##0">{{plc.data.zostavajuce_dni_do_obmedzenia_rychlosti}}</number></td>
+                </tr>
+                
+                <tr>
+                    <td>Last request due payment date:</td>
+                    <td class="text-end">{{plc.data.datum_pozadovanej_platby}}</td>
+                </tr>
+                
+                
+            </table>
+        </div>
+        
+        <div style="min-height:10px"/>
+    
+        <div class="panelTable">
+            <div class="panelTableGrid">
+
+                
+                <div>
+                    <div>PLC server:</div>
+                    <div class="text-end">{{plc.data.socket_server}}</div>
+                </div>
+                
+                <div>
+                    <div>PLC interval:</div>
+                    <div class="text-end">{{plc.data.socket_interval}}</div>
+                </div>
+                
+            </div>
+        </div>
+    
+        
+        <script cmd="base64">
+            (function(){
+                let alarm = $("div.notify-alarm[alarm]").attr("alarm");
+                alarm = alarm.replaceAll(" ","");
+                let p = alarm.split('');
+                p.splice(0, 1);
+                p.splice(8, 8);
+        
+                $.each($("div.notify-alarm[alarm] > div"), function(k,v){
+                    $(v).attr("select", p[k]);
+                });
+            })();
+        </script>
+        
+</div>

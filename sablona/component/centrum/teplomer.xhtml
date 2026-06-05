@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <style cmd="base64">
+        div.teplota {
+            max-height: 150px;
+        }
+    </style>
+    
+
+    <div style="min-height: 60px" />
+    
+    <getRest node="teplota">
+        <trieda>centrum.getTeplota</trieda>
+        <parameter>
+            <kluc>{{kluc}}</kluc>
+        </parameter>
+    </getRest>
+
+    <div style=" min-height: 3px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative">
+        <div style=" position: absolute; color: rgba(255,255,255,0.2); bottom: 5px">Temperature Trend Over the Last 24 Hours</div>
+    </div>
+    <div  class="chart-container teplota" data="{{teplota}}">
+        <canvas id="teplomer"></canvas>
+    </div>
+    
+    <div style="min-height: 30px" />
+    
+    <script cmd="base64" src="teplomer.js" />
+</div>

@@ -1,0 +1,6 @@
+# HDTS Monitoring cron jobs
+# test_servis.php: pings all PLC devices, cleans stale data, removes old unverified users
+# Run daily at 03:00 (adjust as needed)
+0 3 * * * root cd /app && php cron/test_servis.php >> /var/log/cron.log 2>&1
+
+# Empty line required at end of crontab

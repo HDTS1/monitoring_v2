@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <setting node="menu_breadcrumb">
+        <item1>
+            <link>/</link>
+            <label>Home</label>
+        </item1>
+        
+        <item2>
+            <label>System info</label>
+        </item2>
+        
+        
+    </setting>
+
+    <component source="/component/breadcrumb" />
+    <component source="/component/logged_user" />
+
+<div class="container">
+    
+    <getRest node="info">
+        <trieda>monitor.getSystemInfo</trieda>
+    </getRest>
+    
+    
+    
+    
+    
+    <div class="p-3">
+        
+        <for data="info">
+            <div style=" background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 3px 15px 3px 15px; margin: 5px 0px 15px 0px">
+                <div class="h5">{{data.hostname}}</div>
+                <div ><date format="d.m.Y H:i:s">{{model.cas_create}}</date></div>
+                 <hr/>
+                <div><pre>{{data}}</pre></div>
+            </div>
+        </for>
+        
+
+    </div>
+
+
+    <script cmd="base64">
+        
+        page.menu.addMenu("Home", "/", "/assets/svg/person.svg", "--bee-player-card");
+
+    </script>
+
+</div>
+
+</div>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div class="container">
+    <div style=" min-height: 55px" />
+    
+    <style cmd="base64">
+        
+        :root {
+            --bee-player-card: #d84265;
+        }
+        
+        .offcanvas-header {
+            background-color: #d84265 !important;
+        }
+        
+        
+        div.offcanvas-backdrop {
+            pointer-events:  none;
+        }
+        
+    </style>
+    
+    
+    <ss>
+        
+        <div item="0" style="background: rgba(255,255,255,0.2); padding: 5px; border: 2px solid rgba(255,255,255,0.3); border-radius: 5px">
+            <form onsubmit="return page.login.send(this)">
+                <div class="p-1">
+                    <div>Email</div>
+                </div>
+                <div class="p-1">
+                    <div><input type="text" placeholder="Email address" class=" form-control" test="email" name="email" data-item="username"/></div>
+                </div>
+
+                  <div class="p-1">
+                      <div><button class="btn btn-primary w-100" >Next</button></div>
+                </div>
+            </form>
+        </div>
+        
+        <div item="1" >
+            <div style="background: rgba(255,255,255,0.2); padding: 5px; border: 2px solid rgba(255,255,255,0.3); border-radius: 5px">
+            <form onsubmit="return page.login.overit(this)">
+                <div class="p-1">
+                    <div>Code</div>
+                </div>
+                <div class="p-1">
+                    <div><input type="text" placeholder="Code" class=" form-control" test="code" name="code" data-item="code"/></div>
+                </div>
+
+                <div class="p-1">
+                      <div><button class="btn btn-primary w-100" >Next</button></div>
+                </div>
+                
+                <div class="p-1" item="info">
+                    <div style="margin-bottom: 16px;">
+                        <div style="margin-bottom: 16px;">A login key has been sent to your email: </div>
+                        <div style="font-weight: bold;"> {email} </div> 
+                    </div>
+                    
+                    <p>If you don't see it in your inbox, please check your spam folder.</p>
+                </div>
+                
+                
+            </form>
+            </div>
+        </div>
+        
+        
+        
+        
+        
+        
+    </ss>
+    
+    
+    
+    
+    <div class=" text-end" style="font-size: 15vw; color: rgba(255,255,255,0.4); font-weight: bold; ">Login</div>
+    <div class=" text-end">
+        <button class="btn btn-secondary" style=" min-width: 160px"  onclick="page.login.form()">Next</button>
+    </div>
+    
+    <!--
+    <center>
+        <div style=" min-height: 55px" />
+        <div>User login</div>
+        <div style=" min-height: 15px" />
+        
+        
+        <form style="max-width: 380px">
+
+            <input type="hidden" data-item="url" value="{{route.url_path}}"/>
+            <div class="p-1">
+                <input type="text" class="form-control" placeholder="email address" name="email" data-item="username" />
+            </div>
+
+            
+            <div class="p-1">
+                <button class="btn btn-primary w-100">Next</button>
+            </div>
+        </form>
+        
+
+   
+    </center>
+    -->
+    
+    <script cmd="base64" src="login.js" />
+    
+</div>

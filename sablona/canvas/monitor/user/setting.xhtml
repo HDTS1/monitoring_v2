@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <div item="form">
+        <div style=" max-height: 40px" />
+
+        <div  style=" font-weight:  bold">
+            {{data.username}}
+        </div>
+        
+        <input type="hidden" data-item="id_model" value="{{model.id_model}}" />
+
+        
+        
+        
+        <div>
+            <div style=" min-height: 4px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); border-radius: 2px;"/>
+        </div>
+        
+            <getRest node="access">
+                <trieda>user.last_active_access</trieda>
+                <parameter>
+                    <kluc>{{model.id_model}}</kluc>
+                </parameter>
+            </getRest>
+            
+            <getRest node="last_url">
+                <trieda>user.last_access_url</trieda>
+                <parameter>
+                    <username>{{data.username}}</username>
+                </parameter>
+            </getRest>
+        
+
+            
+            <test data="access.time">
+                <podmienka>value==null</podmienka>
+                <div result="true" style=" font-size: 80%; color: rgba(255,255,255,0.5)">Nie je aktivne session</div>
+                <div result="false" style=" font-size: 80%; color: rgba(255,255,255,0.5)">
+                    <div>Posledna aktivacia session</div>
+                    <div>{{access.time}}</div>
+                </div>
+            </test>
+            
+            
+            <test data="last_url.0">
+                <podmienka>value==null</podmienka>
+                <div result="true" style="font-size: 80%; font-family: sans-serif; color: rgba(255,255,255,0.5)">Neevidujem ziadne pristupy</div>
+                
+                <div result="false">
+                    <div style=" max-height: 30px;" />
+                    <div style="font-size: 90%; color: rgba(255,255,255,0.5)">Posledne pristupy:</div>
+                    <for data="last_url">
+                        <div style="font-size: 80%; font-family: sans-serif; color: rgba(255,255,255,0.5)">
+                            <div >{{date_time}}</div>
+                        </div>
+
+                    </for>
+                </div>
+            </test>
+            
+            
+        <div>
+            
+            <div style=" min-height: 15px" />
+            
+            <getRest node="centrum">
+                <trieda>centrum.listCentrum</trieda>
+            </getRest>
+            
+            
+            <div class="form-floating mb-2" >
+                <select class="form-select"  aria-label="" data-item="opravnenie" value="{{selectValue}}">
+                    <option value="0">Cakanie na autorizaciu</option>
+                    <option value="1000">Administrator</option>
+                    
+                    <for data="centrum">
+                        <option value="100|{{model.id_model}}">Centrum: {{data.label}}</option>
+                    </for>
+                </select>
+
+              <label  class="frm-label">Opravnenie</label>
+            </div>
+        </div>
+            
+        <div style=" min-height: 15px" />
+        
+        <div>
+            <button class="btn btn-primary w-100" item="cmd">Set opravnenie</button>
+        </div>     
+
+    </div>
+</div>

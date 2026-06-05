@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+
+    <style cmd="base64">
+        :root {
+            --bee-player-card: #483fe3;
+        }
+        
+        .offcanvas-header {
+            background-color: #483fe3 !important;
+        }
+        
+        
+        .b-menu {
+            background: var(--bee-user-light);
+        }
+
+        .custom-breadcrumb {
+            background: var(--bee-user-dark);
+        }
+
+        .custom-footer {
+            background-color: var(--bee-user-light);
+        }
+
+        .one-col {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .one-col > div:first-child > div:first-child {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .col-date {
+            font-size: .8rem;
+        }
+
+        .col-title {
+            margin: .25rem 0;
+            color: var(--bee-user-light);
+            font-weight: bold;
+            
+        }
+
+        .col-camera {
+            margin: .25rem 0;
+        }
+
+        .parameter-name {
+            font-size: .7rem;
+            margin-bottom: .25rem;
+        }
+
+        .parameter-value {
+            min-width: 100px;
+            max-width: 250px;
+            height: 35px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            display: grid;
+            align-items: center;
+        }
+
+        .thermometer.parameter-value {
+            min-width: initial;
+            max-width: initial;
+        }
+
+        .border-radius {
+            padding: 1rem;
+            background: var(--b-color-darkgray-darker);
+            border-radius: 10px;
+        }
+
+        .border-radius.last {
+            border-radius: 10px 10px 0px 0px;
+        }
+        
+        
+        .plc-status {
+            font-size: .7rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plc-status > div:last-child {
+            margin-left: .5rem;
+            width: 1rem;
+            height: 1rem;
+            background-color: #4BC4AA;
+            /*#CC4566*/
+            clip-path: circle(50% at 50% 50%);
+        }
+
+        .camera-view {
+            height: 75px; 
+            width: 100px; 
+            background: black;
+        }
+
+        .col-flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .horizontal-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+        }
+
+        div.play_camera {
+            cursor: pointer;
+        }
+        
+        div.label-setting {
+            background:  rgba(255,255,255,0.2);
+            padding: 5px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 5px;
+            margin: -10px;
+        }
+        
+        
+        div.label-setting > div {
+            padding: 5px;
+        }
+        
+        div.label-setting > div > div:first-child {
+            color: rgba(255,255,255,0.5);
+        }
+        
+    </style>
+    
+    <setting node="menu_breadcrumb">
+        <item1>
+            <link>/</link>
+            <label>Home</label>
+        </item1>
+        
+        <item2>
+            <label>Centrum</label>
+        </item2>
+        
+    </setting>
+
+    <component source="/component/breadcrumb" />
+    <component source="/component/logged_user" />
+
+    
+    <div class="container">
+        
+        <div style=" min-height: 30px;" />
+        
+        <setting node="kluc">
+            <kluc>{{route.url.1}}</kluc>
+        </setting>
+        
+        
+        
+        <getRest node="centrum">
+            <trieda>centrum.getCentrumUser</trieda>
+            <parameter>
+                <kluc>{{kluc.kluc}}</kluc>
+            </parameter>
+        </getRest>
+        
+        <model data="{{centrum}}"></model>
+        
+        
+        <div >
+            <div class="h3">Centrum: {{centrum.label}}</div>
+            <div style="color: rgba(255,255,255,0.3)">(Admin rozhranie: nastavenie pre klienta)</div>
+        </div>
+        
+        <test data="centrum.papago" >
+            <podmienka >value==null</podmienka>
+            <div result="true">
+                <div style="min-height:25px" />
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-diamond-fill" style=" font-size: 120%; padding-right: 15px; color: rgba(200,0,0,0.8)"></i> Nie nastaveny teplomer ....
+                </div>
+            </div>
+            <component result="false" source="/component/centrum/teplomer" data="kluc"   />
+        </test>
+        
+
+        <test data="centrum.plc" >
+            <podmienka >value==null</podmienka>
+            <div result="true">
+                <div style="min-height:25px" />
+                <div class="alert alert-danger" role="alert">
+                  <i class="bi bi-exclamation-diamond-fill" style=" font-size: 120%; padding-right: 15px; color: rgba(200,0,0,0.8)"></i> Nie su nastavene PLC ....
+                </div>
+            </div>
+            <component result="false" source="/component/centrum/plc" data="kluc"  />
+        </test>
+
+        <test data="centrum.camera" >
+            <podmienka >value==null</podmienka>
+            <div result="true">
+                <div style="min-height:25px" />
+                <div class="alert alert-danger" role="alert">
+                  <i class="bi bi-exclamation-diamond-fill" style=" font-size: 120%; padding-right: 15px; color: rgba(200,0,0,0.8)"></i> Nie je nastavena dohladova kamera ....
+                </div>
+
+            </div>
+            <component result="false" source="/component/centrum/camera" data="kluc"  />
+        </test>
+        
+        <div style=" min-height: 50px" />
+        
+        <div class="label-setting">
+            <div>
+                <div>Teplomer: </div>
+                <div>{{centrum.papago}}</div>
+            </div>
+
+            <div style="padding: 5px">
+                <div>PLC: </div>
+                <div>
+                    <for data="centrum.plc">
+                        <span style=" margin-right: 10px">{{plc}}</span>
+                    </for>
+                </div>
+            </div>
+
+            <div style="padding: 5px">
+                <div>Casove pasmo: </div>
+                <div>{{centrum.casove_pasmo}}</div>
+            </div>
+
+            <div style="padding: 5px">
+                <div>IP rozsah: </div>
+                <div>{{centrum.ip_range}}</div>
+            </div>
+
+            <div style="padding: 5px">
+                <div>Poznamka: </div>
+                <div>{{centrum.poznamka}}</div>
+            </div>
+        </div>
+        
+        
+        <div style=" min-height: 50px" />
+        
+
+        
+        
+        
+    </div>
+
+
+    <script cmd="base64" src="centrum.js" />
+    
+    <script cmd="base64">
+        
+        page.menu.addMenu("HST change range", "javascript: page.centrum.switchRange()", "/assets/svg/person.svg", "--bee-player-card");
+        page.menu.addMenu("Online camera", "javascript: page.start.scroll('onlineCamera')", "/assets/svg/person.svg", "--bee-player-card");
+
+        page.menu.addMenu("Support", "https://system.hockeydts.com/", "/assets/svg/person.svg", "--bee-player-card");
+        page.menu.addMenu("Nastavenie centrum",  "javascript: page.centrum.setting()", "/assets/svg/person.svg", "--bee-player-card");
+        
+        /*
+        page.menu.addMenu("Add test plan", "javascript:page.start.createItem.test_plan()", "/assets/svg/person.svg");
+        page.menu.addMenu("Add training plan", "javascript:page.start.createItem.training_plan()", "/assets/svg/person.svg");
+        page.menu.addMenu("Login out", "/login_off", "/assets/svg/person.svg", "--bee-player-card");
+         */
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

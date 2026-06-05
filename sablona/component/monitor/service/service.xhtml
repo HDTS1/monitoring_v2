@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div class="service-component" kluc="{{id_model}}" >
+
+    <getRest node="service">
+        <trieda>service.getService</trieda>
+        <parameter>
+            <kluc>{{id_model}}</kluc>
+        </parameter>
+    </getRest>
+    
+    <div state="{{service.dostupnost.state}}" >
+        
+    </div>
+    
+    <div kluc="{{service.model.id_model}}" group="{{service.data.group}}">
+        <div class="dostupnost-button">
+            <div><button class="btn btn-primary" onclick="page.dostupnost.overit(this)">Overit okamzitu dostupnost</button></div>
+        </div>
+
+        <div style=" display:  grid; grid-template-columns: 1fr auto auto">
+            <div><b>{{service.data.label}}</b>  </div>
+            
+            <div style="color: rgba(255,255,255,0.6)">{{service.data.group_name}}</div>
+            <div style=" min-width: 25px; text-align: right; padding: 0px 3px 0px 5px">{{service.d48}}%</div>
+        </div>
+
+
+        <div>Test time: {{service.data.host}}:{{service.data.port}} : {{service.dostupnost.cas_create}}</div>
+
+
+    </div>
+    
+    
+
+    
+
+</div>

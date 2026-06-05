@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div class="custom-breadcrumb">
+
+    <style cmd="base64">
+        .b-nav-panel {
+            min-height: 30px;
+            padding-top: 15px;
+        }
+
+        .b-nav-panel > div {
+            padding: 3px 0px;
+            margin-left: 0.75rem;
+        }
+
+        .b-nav-panel > div::after {
+            content: " / ";
+        }
+
+        .b-nav-panel > div:last-child::after {
+            content: "";
+        }
+    </style>
+
+    <div class="container">
+        <div class="d-flex align-items-center b-nav-panel">
+            
+
+            <for data="menu_breadcrumb">
+
+                <test data="link">
+                    <podmienka>value == null</podmienka>  
+                    <div result="true">{{label}}</div>
+                    <div result="false"><a href="{{link}}">{{label}}</a></div>
+                </test>
+                    
+
+                
+            </for>
+                
+
+        </div>
+    </div>
+</div>

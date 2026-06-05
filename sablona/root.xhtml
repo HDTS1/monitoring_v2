@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="robots" content="index, follow"/>
+        <meta name="author" content="Pavol Prazenka, Bratislava, Slovakia"/>
+        <!--
+        <link rel="apple-touch-icon" sizes="180x180" href="/source/apple-touch-icon.png"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="/source/favicon-32x32.png"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="/source/favicon-16x16.png"/>
+        <link rel="manifest" href="/source/site.webmanifest"/>
+        -->
+        <link rel="shortcut icon" type="image/x-icon" href="/source/favicon.ico"/>
+        <seo_place/>
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"/>
+
+        <script type="application/ld+json" >
+            {"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Pavol Prazenka","url":"https://www.prazenka.sk","affiliation":{"@type":"Organization","name":"Risus s.r.o."}},"url":"https://www.prazenka.sk","datePublished":"2024-11-14","name":"BeeSPORT Monitoring","description":"Monitoring of services and facilities for conducting sports activities","publisher":{"@type":"Organization","name":"Risus s.r.o., Bratislava"}}
+        </script>
+
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+        <!-- Sort -->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css"/>
+        <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script> 
+        
+        
+        <script cmd="base64" src="/source/script/app.js" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet"   href="https://fonts.googleapis.com/css?family=Saira"/>
+
+        <link rel="stylesheet" cmd="base64"  href="/sablona/style/root.css"/>
+        <script cmd="base64" src="/source/script/start.js" />
+
+    </head>
+    <body user="{{route.user}}" >
+        
+        <!--
+        <div style="position: fixed; left: 0px; bottom: 0px; top: 0px; min-width: 30px; background: red">
+            <div style=" writing-mode: vertical-rl; text-orientation: upright; transform: translate(0,80px)">Demo</div>
+        </div>
+        -->
+        
+
+
+        <div class="b-layout">
+            <div>
+                <component source="/component/header" />
+            </div>
+            <div class="b-content" >
+                <component source="{{route.page.app}}" />
+            </div>
+            <div></div>
+            <div  style=" z-index: 5">
+                <component source="/component/footer" />
+            </div>
+        </div>
+
+        
+        
+        <seo source="/component/seo" data="seo"></seo>
+        
+        
+        <component source="/canvas/default" />
+      
+
+        
+        <!--
+        <canvas id="snowCanvas" style="display: block"></canvas>
+        <script src="sneh.js"></script>
+        -->
+        
+        
+        <script cmd="base64">
+            page.start.cmdEvent("root_load");
+        </script>
+        
+
+        
+        
+    </body>
+</html>

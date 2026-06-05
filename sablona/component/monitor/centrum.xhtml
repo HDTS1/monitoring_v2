@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div style="padding: 15px; border: 1px solid gray; border-radius: 10px; margin: 10px; box-shadow: 0px 0px 5px rgba(255,255,255,0.5)">
+    
+    <style cmd="base64">
+        
+        div.centrum-component > a {
+            background: rgba(255,255,255,0.1);
+            font-size: 80%;
+            margin: 3px 0px 3px 0px;
+            display: grid;
+            grid-template-columns: 20px 1fr;
+            border-radius: 5px;
+            overflow:  hidden;
+        }
+        
+        div.centrum-component > a > div:first-child {
+            background: rgba(200,100,0,0.8);
+            min-width: 100%;
+        }
+        
+        div.centrum-component > a >  div:first-child[state='1'] {
+            background: rgba(0,140,0,0.7);
+        }
+        
+        div.centrum-component > a  > div:nth-child(2) {
+            padding: 3px 5px 3px 15px;
+        }
+        
+        div.centrum-component > a:hover {
+            background: rgba(200,0,0,0.3);
+        }
+        
+        
+    </style>
+    
+    <getRest node="centrum">
+        <trieda>centrum.listCentrum</trieda>
+    </getRest>
+    
+    
+
+    
+    <div class="p-1" style="color: rgba(255,255,255,0.6)">Centrum</div>
+    <div style="padding: 5px">
+        <div id="list_centrum" >
+            <for data="centrum">
+               
+                <component source="/component/monitor/centrum/centrum"  data="model" />
+            </for>
+        </div>
+    </div>
+    
+    
+    
+    <script cmd="base64" src="centrum.js"/>  
+</div>

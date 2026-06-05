@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <div >
+
+        <style cmd="base64">
+            div.row-teplomer {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                background: rgba(255,255,255,0.1);
+                margin: 2px 0px 2px 0px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            
+            div.row-teplomer > div {
+                padding: 3px 5px 3px 5px;
+                
+            }
+            
+            div.row-teplomer > div:first-child {
+                min-width: 35px;
+                opacity: 0.2;
+            }
+            
+            div.row-teplomer[select='1'] > div:first-child {
+                color: orangered;
+                opacity: 1;
+            }
+            
+        </style>
+
+        <getRest node="teplomer">
+            <trieda>centrum.listTeplomer</trieda>
+        </getRest>
+
+        <div>
+            <button class="btn btn-primary w-100" item="cmd">Set Teplomer</button>
+        </div>
+
+        <div style=" min-height: 15px" />
+
+        <div class='select'>
+            <for data="teplomer">
+                <div class="row-teplomer" select="0" kluc='{{name}}'>
+                    <div><i class="bi bi-clipboard-check-fill"></i></div>
+                    <div>{{name}}</div>
+                </div>
+            </for>
+            
+        </div>
+        
+
+        
+
+
+    </div>
+
+ 
+        
+        
+        
+</div>

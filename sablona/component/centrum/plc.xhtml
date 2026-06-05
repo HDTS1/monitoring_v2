@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div id="plc_view">
+
+    <style cmd="base64">
+        div.chart-container {
+
+            height: 350px;
+
+
+        }
+
+        /* Pokud chcete, aby canvas měl maximální šířku */
+        #v {
+            width: 100% !important;  /* Nastavení šířky na 100% kontejneru */
+            height: 100%; /* Nastavení výšky na 100% kontejneru */
+        }
+
+        
+        div.word_state {
+            border-top: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            padding: 3px 5px 3px 5px;
+            margin-top: 0px;
+            border-radius: 0px 0px 5px 5px;
+        }
+        
+        .image-word_state {
+            width: 28px;
+            height: auto;
+            filter:  invert(1) ;
+            opacity: 0.1;
+            margin: 0px 5px 0px 5px;
+
+        }
+        
+        .image-word_state[select='1'] {
+
+            filter: invert(0.5) sepia(1) saturate(8000%) hue-rotate(30deg) brightness(1.3) drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.6));
+            animation: blink 1s ease-in-out infinite;
+            -webkit-animation: blink 1s ease-in-out infinite;
+
+        }
+        
+        .image-word_state:nth-child(1)[select='1'] {
+
+            filter: invert(0.5) sepia(1) saturate(8000%) hue-rotate(110deg) brightness(1.3) drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.6));
+            animation: none;
+            -webkit-animation: none;
+            opacity: 1;
+
+
+        }
+        
+        
+        div.alarm {
+            border-top: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            padding: 3px 5px 3px 5px;
+            margin-top: 0px;
+            border-radius: 0px 0px 5px 5px;
+
+        }
+
+
+        .image-alarm {
+            width: 28px;
+            height: auto;
+            filter:  invert(1) ;
+            opacity: 0.1;
+            margin: 0px 5px 0px 5px;
+
+        }
+
+
+        .image-alarm[select='1'] {
+
+            filter:  invert(0.5) sepia(1) saturate(8000%) hue-rotate(0deg) brightness(1.2) drop-shadow(0px 0px 5px rgb(255 255 255 / 0.5));
+            opacity: 1;
+
+        }
+
+        .onclick_plc_state {
+            cursor: pointer;
+        }
+        
+        .onclick_plc_state:hover {
+            background-color: rgba(0,0,160,0.3);
+        }
+        
+        
+        .onclick_history {
+            cursor: pointer;
+        }
+        
+        .onclick_history:hover {
+            background-color: rgba(0,0,160,0.3);
+            
+        }
+        
+        
+        @keyframes blink_word {
+          0% {
+            opacity: 1;
+            
+          }
+
+          50% {
+            opacity: .6;
+
+ 
+          }
+
+          100% {
+            opacity: 1;
+
+          }
+        }
+        
+        div.panel_statistika{
+            transition: all 0.5s;
+        }
+        
+        div.panel_statistika[v='false']{
+            opacity: 0.2;
+            transition: all 0.5s;
+        }
+        
+        
+        div.offcanvas-body > div > div.border-gradient {
+            display: none;
+        }
+        
+        
+    </style>
+
+
+
+    <getRest node="plc">
+        <trieda>centrum.getCentrumPLC</trieda>
+        <parameter>
+            <kluc>{{kluc}}</kluc>
+            <from>{{from}}</from>
+            <to>{{to}}</to>
+        </parameter>
+    </getRest>
+
+
+
+    <div id="plcData" data="{{plc}}"></div>
+    
+    <div style=" min-height: 40px" />
+
+    
+
+    
+    <div style=" min-height: 3px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative">
+        <div style=" position: absolute; color: rgba(255,255,255,0.2); bottom: 5px">Graph of HST Utilization</div>
+    </div>
+    
+    
+    <getRest node="statistic_plc">
+        <trieda>centrum.statistic_centrum_plc</trieda>
+        <parameter>
+            <kluc>{{kluc}}</kluc>
+            <from>{{from}}</from>
+            <to>{{to}}</to>
+        </parameter>
+    </getRest> 
+    
+    
+    
+    <div  style=" font-size: 110%; position: relative">
+        <div style=" position: absolute"><date format="Y-m-d">{{statistic_plc.plc.0.data.range.from}}</date> | <date  format="Y-m-d">{{statistic_plc.plc.0.data.range.to}}</date></div>
+    </div>
+    
+    
+    <div class="d-flex justify-content-end">
+    
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuGraf" data-bs-toggle="dropdown" aria-expanded="false" style=" min-width: 220px; border-radius: 0px 0px 5px 5px">
+                <i class="bi bi-bar-chart-line"></i> <span>Belt runs</span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuGraf" style=" min-width: 220px">
+            <li><div class="dropdown-item" role="button" >Belt runs</div></li>
+            <li><div class="dropdown-item" role="button">Distance (km)</div></li>
+            <li><div class="dropdown-item" role="button">Runtime (h)</div></li>
+            <li><div class="dropdown-item" role="button">HST Speed (km/h)</div></li>
+            
+            <!--
+            <li><div class="dropdown-item" role="button">MAX Belt Speed (km/h)</div></li>
+            <li><div class="dropdown-item" role="button">AVG Belt Speed (km/h)</div></li>
+            -->
+          </ul>
+        </div>    
+    
+    </div>
+    
+    <div style=" min-height: 20px" />
+    
+    <div  class="chart-container">
+        <canvas id="v" ></canvas>
+    </div>
+
+    <div style="min-height: 50px" />
+    
+    <div item="row_plc">
+        <div style=" min-height: 3px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative">
+            <div style=" position: absolute; color: rgba(255,255,255,0.2); bottom: 5px">Statistics</div>
+        </div>
+
+
+        <div class="row" >
+
+
+
+
+
+            <for data="statistic_plc.plc">
+                <div class="col-12 col-md-6  p-1">
+
+
+
+                    <div style=" margin-bottom: 10px;" class="panel_statistika" v="true">
+                        <div class="col-title" style=" transform:  translate(5px, 15px); display: grid; grid-template-columns: 1fr auto">
+                            <div>{{label}} : Statistics</div>
+                            <div style=" padding-right: 15px; font-size: 80%; color: rgba(255,255,255,0.3)"><date format="Y-m-d">{{data.range.from}}</date> | <date format="Y-m-d">{{data.range.to}}</date></div>
+                        </div>
+                        <div class="border-radius last onclick_history" kluc="{{plc}}" label="{{label}}">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="parameter-name ">Distance (km)</div>
+                                    <div class="parameter-value sumDistance">{{data.total_distance}}</div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="parameter-name">Belt runs</div>
+                                    <div class="parameter-value">{{data.cycle_count}}</div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="parameter-name">Runtime (h)</div>
+                                    <div class="parameter-value sumRun_time">{{data.run_time}}</div>
+                                </div>
+                                
+                                <div style=" min-height: 1px; background: rgba(255,255,255,0.1); margin: 5px 0px 5px 0px" />
+                                <div class="parameter-name">Speed HST (km/h)</div>
+                                <div class="col-4">
+                                    <div class="parameter-name">MAX</div>
+                                    <div class="parameter-value">{{data.max_speed}}</div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="parameter-name">AVG</div>
+                                    <div class="parameter-value ">{{data.avg_speed}}</div>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <div class="parameter-name">MIN</div>
+                                    <div class="parameter-value ">{{data.min_speed}}</div>
+                                </div>
+                                
+                                
+                            </div>
+
+
+                        </div>
+                        <div></div>
+                        
+                        <div style=" position: relative">
+
+                            <div class="word_state" >
+
+                                <img src="/source/image/alarm/20.svg" class="image-word_state" select='0' title="Skatemill ON" />
+                                <img src="/source/image/alarm/21.svg" class="image-word_state"  select='0' title="Service request" />
+                                <img src="/source/image/alarm/22.svg" class="image-word_state"  select='0' title="Speed limit without service" />
+                                <img src="/source/image/alarm/23.svg" class="image-word_state d-none"  select='0' title="Servisny indikator na obrazovke" />
+                                <img src="/source/image/alarm/24.svg" class="image-word_state"  select='0' title="Payment required" />
+                                <img src="/source/image/alarm/25.svg" class="image-word_state"  select='0' title="Belt runtime limit active" />
+                                <img src="/source/image/alarm/26.svg" class="image-word_state"  select='0' title="Speed limit active" />
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </for>   
+
+
+        </div>
+    </div>
+        
+        
+    <div style="min-height: 30px" />
+    
+    <div item="row_plc">
+        <div style=" min-height: 3px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative">
+            <div style=" position: absolute; color: rgba(255,255,255,0.2); bottom: 5px">Last run data</div>
+        </div>
+
+        <div class="row">
+
+            <getRest node="last_plc">
+                <trieda>centrum.last_centrum_plc</trieda>
+                <parameter>
+                    <kluc>{{kluc}}</kluc>
+                </parameter>
+            </getRest> 
+
+
+            <for data="last_plc.plc">
+                <div class="col-12 col-md-6 p-1">
+
+                    <div style=" margin-bottom: 10px;">
+                        <div class="col-title" style=" transform:  translate(5px, 15px); display: grid; grid-template-columns: 1fr auto">
+                            <div>{{label}} : Last run data</div>
+                            <!--
+                            <div style=" padding-right: 15px; font-size: 80%; color: rgba(255,255,255,0.3)"><date format="Y-m-d H:i">{{data.cas_create}}</date></div>
+                            -->
+                            <div/>
+                        </div>
+                        <div class="border-radius last onclick_plc_state" kluc="{{plc}}" label="{{label}}">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="parameter-name">Belt Speed (km/h)</div>
+                                    <div class="parameter-value">{{data.rychlost_pasu}}</div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="parameter-name">Belt Slope (°)</div>
+                                    <div class="parameter-value">{{data.sklon_pas}}</div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="parameter-name">Distance (m)</div>
+                                    <div class="parameter-value">{{data.ubehnuta_vzdialenost}}</div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div style=" position: relative">
+                            <div class="alarm" data="{{data.alarm_word}}">
+
+                                <img src="/source/image/alarm/01.svg" class="image-alarm"  title="Alarm ..." />
+                                <img src="/source/image/alarm/02.svg" class="image-alarm"  title="Alarm ..." />
+                                <img src="/source/image/alarm/03.svg" class="image-alarm"  title="Alarm ..." />
+                                <img src="/source/image/alarm/04.svg" class="image-alarm"  title="Alarm ..." />
+                                <img src="/source/image/alarm/05.svg" class="image-alarm"  title="Alarm ..." />
+                                <img src="/source/image/alarm/06.svg" class="image-alarm"  title="Alarm ..." />
+                                <img src="/source/image/alarm/07.svg" class="image-alarm"  title="Alarm ..." />
+                                <img src="/source/image/alarm/08.svg" class="image-alarm"  title="Alarm ..." />
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </for>   
+
+
+        </div>
+    </div>
+        
+        
+        
+    <script cmd="base64" src="plc.js"></script>
+    
+
+</div>

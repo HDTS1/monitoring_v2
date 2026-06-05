@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+
+    <script cmd="base64">
+            page.convertDatum = function(time,zona='America/Edmonton'){
+                let bDate = new Date(time);
+                let x = bDate.toLocaleString('en-US', { timeZone: zona });
+                let targetDate = new Date(x);
+                return targetDate;
+
+            };
+    </script>
+    
+    
+    
+    <style cmd="base64">
+        :root {
+            --bee-player-card: #483fe3;
+        }
+        
+        .offcanvas-header {
+            background-color: #483fe3 !important;
+        }
+        
+        
+        .b-menu {
+            background: var(--bee-user-light);
+        }
+
+        .custom-breadcrumb {
+            background: var(--bee-user-dark);
+        }
+
+        .custom-footer {
+            background-color: var(--bee-user-light);
+        }
+
+        .one-col {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .one-col > div:first-child > div:first-child {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .col-date {
+            font-size: .8rem;
+        }
+
+        .col-title {
+            margin: .25rem 0;
+            color: var(--bee-user-light);
+            font-weight: bold;
+            
+        }
+
+        .col-camera {
+            margin: .25rem 0;
+        }
+
+        .parameter-name {
+            font-size: .7rem;
+            margin-bottom: .25rem;
+        }
+
+        .parameter-value {
+            min-width: 100px;
+            max-width: 250px;
+            height: 35px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            display: grid;
+            align-items: center;
+        }
+
+        .thermometer.parameter-value {
+            min-width: initial;
+            max-width: initial;
+        }
+
+        .border-radius {
+            padding: 1rem;
+            background: var(--b-color-darkgray-darker);
+            border-radius: 10px;
+        }
+
+        .border-radius.last {
+            border-radius: 10px 10px 0px 0px;
+        }
+        
+        
+        .plc-status {
+            font-size: .7rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plc-status > div:last-child {
+            margin-left: .5rem;
+            width: 1rem;
+            height: 1rem;
+            background-color: #4BC4AA;
+            /*#CC4566*/
+            clip-path: circle(50% at 50% 50%);
+        }
+
+        .camera-view {
+            height: 75px; 
+            width: 100px; 
+            background: black;
+        }
+
+        .col-flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .horizontal-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+        }
+
+        div.play_camera {
+            cursor: pointer;
+        }
+        
+        
+    </style>
+    
+    <setting node="menu_breadcrumb">
+
+        
+        <item2>
+            <label>Monitor</label>
+        </item2>
+        
+    </setting>
+
+    <component source="/component/breadcrumb" />
+    <component source="/component/logged_user" />
+
+    
+    <div class="container">
+        
+        <div style=" min-height: 30px;" />
+        
+
+        
+        <setting node="kluc">
+            <kluc>{{user.data.centrum}}</kluc>
+        </setting>
+        
+        
+        
+        <getRest node="centrum">
+            <trieda>centrum.getCentrumUser</trieda>
+            <parameter>
+                <kluc>{{kluc.kluc}}</kluc>
+            </parameter>
+        </getRest>
+        
+        
+        <getRest node="cas">
+            <trieda>centrum.setPasmo</trieda>
+            <parameter>
+                <pasmo>{{centrum.casove_pasmo}}</pasmo>
+            </parameter>
+        </getRest>
+        
+        
+        <model data="{{centrum}}"></model>
+        
+        
+        <div >
+            <div class="h3">{{centrum.label}}</div>
+            <div><date format="Y-m-d H:i">{{cas.cas}}</date></div>
+        </div>
+        
+        <div style="min-height: 30px;" />
+        
+        
+        <test data="centrum.papago" >
+            <podmienka >value==null</podmienka>
+            <div result="true">
+
+            </div>
+            <component result="false" source="/component/centrum/teplomer" data="kluc"   />
+        </test>
+        
+
+        <test data="centrum.plc" >
+            <podmienka >value==null</podmienka>
+            <div result="true">
+
+            </div>
+            <component result="false" source="/component/centrum/plc" data="kluc"  />
+        </test>
+
+        <test data="centrum.camera" >
+            <podmienka >value==null</podmienka>
+            <div result="true">
+
+            </div>
+            <component result="false" source="/component/centrum/camera" data="kluc"  />
+        </test>
+        
+
+        
+        
+        <div style=" min-height: 50px" />
+    </div>
+
+
+    <script cmd="base64" src="user.js" />
+    
+    <script cmd="base64">
+        
+        
+        
+        
+        page.menu.addMenu("HST change range", "javascript: page.centrum.switchRange()", "/assets/svg/person.svg", "--bee-player-card");
+        page.menu.addMenu("Live camera", "javascript: page.start.scroll('onlineCamera')", "/assets/svg/person.svg", "--bee-player-card");
+        
+        
+        
+        //page.menu.addMenu("Login out", "/login_off", "/assets/svg/person.svg", "--bee-player-card");
+        page.menu.addMenu("Support", "https://system.hockeydts.com/", "/assets/svg/person.svg", "--bee-player-card");
+
+        
+        /*
+        page.menu.addMenu("Online camera", "javascript: page.start.scroll('onlineCamera')", "/assets/svg/person.svg", "--bee-player-card");
+        page.menu.addMenu("Add test plan", "javascript:page.start.createItem.test_plan()", "/assets/svg/person.svg");
+        page.menu.addMenu("Add training plan", "javascript:page.start.createItem.training_plan()", "/assets/svg/person.svg");
+
+         */
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

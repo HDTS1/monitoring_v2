@@ -1,0 +1,46 @@
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    <IfModule mod_headers.c>
+        Header set Access-Control-Allow-Origin "*"
+
+        # One week for CSS files
+        <filesMatch ".(php)$">
+            Header set Cache-Control "max-age=-100, public"
+        </filesMatch>
+
+
+        # One year for image and video files
+        <filesMatch ".(flv|gif|ico|jpg|jpeg|mp4|mpeg|png|svg|swf|webp)$">
+            Header set Cache-Control "max-age=31536000, public"
+        </filesMatch>
+
+        # One month for JavaScript and PDF files
+        <filesMatch ".(js|pdf)$">
+            Header set Cache-Control "max-age=2592000, public"
+        </filesMatch>
+
+        # One week for CSS files
+        <filesMatch ".(css)$">
+            Header set Cache-Control "max-age=604800, public"
+        </filesMatch>
+
+    </IfModule>
+
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+</IfModule>
+

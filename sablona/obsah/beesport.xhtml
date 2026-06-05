@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+
+    <style cmd="base64">
+        :root {
+            --bee-player-card: green;
+            --bee-user-light: green;
+        }
+        
+        .offcanvas-header {
+            background-color: green !important;
+        }
+        
+        
+        .b-menu {
+            background: var(--bee-user-light);
+        }
+
+        .custom-breadcrumb {
+            background: var(--bee-user-light);
+        }
+
+        .custom-footer {
+            background-color: var(--bee-user-light);
+        }
+
+        .one-col {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .one-col > div:first-child > div:first-child {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .col-date {
+            font-size: .8rem;
+        }
+
+        .col-title {
+            margin: .25rem 0;
+            color: var(--bee-user-light);
+            font-weight: bold;
+            
+        }
+
+        .col-camera {
+            margin: .25rem 0;
+        }
+
+        .parameter-name {
+            font-size: .7rem;
+            margin-bottom: .25rem;
+        }
+
+        .parameter-value {
+            min-width: 100px;
+            max-width: 250px;
+            height: 35px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            display: grid;
+            align-items: center;
+        }
+
+        .thermometer.parameter-value {
+            min-width: initial;
+            max-width: initial;
+        }
+
+        .border-radius {
+            padding: 1rem;
+            background: var(--b-color-darkgray-darker);
+            border-radius: 10px;
+        }
+
+        .border-radius.last {
+            border-radius: 10px 10px 0px 0px;
+        }
+        
+        
+        .plc-status {
+            font-size: .7rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plc-status > div:last-child {
+            margin-left: .5rem;
+            width: 1rem;
+            height: 1rem;
+            background-color: #4BC4AA;
+            /*#CC4566*/
+            clip-path: circle(50% at 50% 50%);
+        }
+
+        .camera-view {
+            height: 75px; 
+            width: 100px; 
+            background: black;
+        }
+
+        .col-flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .horizontal-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+        }
+
+        div.play_camera {
+            cursor: pointer;
+        }
+        
+        div.label-setting {
+            background:  rgba(255,255,255,0.2);
+            padding: 5px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 5px;
+            margin: -10px;
+        }
+        
+        
+        div.label-setting > div {
+            padding: 5px;
+        }
+        
+        div.label-setting > div > div:first-child {
+            color: rgba(255,255,255,0.5);
+        }
+        
+    </style>
+    
+    <setting node="menu_breadcrumb">
+        <item1>
+            <link>/</link>
+            <label>Home</label>
+        </item1>
+        
+        <item2>
+            <label>Beesport Data</label>
+        </item2>
+        
+    </setting>
+
+    <component source="/component/breadcrumb" />
+    <component source="/component/logged_user" />
+
+    
+    <div class="container">
+        
+        <div style=" min-height: 30px;" />
+        
+
+        
+        
+        <getRest node="db">
+            <trieda>beesport.db</trieda>
+        </getRest>
+
+        <div>
+            <select class="form-select" id="selectTable">
+                <for data="db">
+                    <option value="{{TABLE_NAME}}">{{TABLE_NAME}}</option>
+                </for>
+            </select>
+        </div>
+        
+        
+        <for data="db">
+            <div style=" margin: 15px 0px 10px 0px; background: rgba(255,255,255,0.15); padding: 3px;" id="{{TABLE_NAME}}">
+                <pre>{{*}}</pre>
+            </div>
+        </for>
+        
+        
+        <div style=" min-height: 50px" />
+        
+
+        
+        
+        
+    </div>
+
+
+    <script cmd="base64">
+        (function(){
+            $("#selectTable").change(function(){
+                let x = $(this).val();
+                page.start.scroll(x);
+                
+            });
+
+        })();
+        
+        
+        page.menu.addMenu("Home", "/", "/assets/svg/person.svg", "--bee-player-card");
+
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

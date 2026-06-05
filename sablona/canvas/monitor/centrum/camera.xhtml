@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <div >
+
+        <style cmd="base64">
+            div.row-camera {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                background: rgba(255,255,255,0.1);
+                margin: 2px 0px 2px 0px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            
+            div.row-camera > div {
+                padding: 3px 5px 3px 5px;
+                
+            }
+            
+            div.row-camera > div:first-child {
+                min-width: 35px;
+                opacity: 0.2;
+            }
+            
+            div.row-camera[select='1'] > div:first-child {
+                color: orangered;
+                opacity: 1;
+            }
+        </style>
+
+        <getRest node="camera">
+            <trieda>centrum.listVideoCentrum</trieda>
+        </getRest>
+
+        
+
+        <div>
+            <button class="btn btn-primary w-100" item="cmd">Set centrum</button>
+        </div>
+        
+        <div style=" min-height: 15px" />
+        
+        <div class='select'>
+            <for data="camera">
+                <div class="row-camera" select="0" kluc='{{id_model}}' host='{{host}}'>
+                    <div><i class="bi bi-clipboard-check-fill"></i></div>
+                    <div>{{label}}</div>
+                </div>
+            </for>
+            
+        </div>
+        
+
+
+
+    </div>
+
+</div>

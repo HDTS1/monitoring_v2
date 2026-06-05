@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+
+    <style cmd="base64">
+
+        :root {
+            --bee-player-card: #d84265;
+        }
+
+        .offcanvas-header {
+            background-color: #d84265 !important;
+        }
+
+        div.user-panel {
+            margin: 0px 0px 55px 0px;
+        }
+
+        
+        
+        div.user-panel > div:last-child {
+            padding: 10px;
+            /* background: red; */
+            min-height: 30px;
+        }
+        
+        
+        div.userData {
+            padding: 3px 5px 3px 5px;
+            background: rgba(255,255,255,0.1);
+            margin: 3px;
+            border: 1px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            font-size: 90%;
+        }
+        
+        div.userData:hover {
+            background: rgba(0,200,0,0.3);
+        }
+        
+        .drop-hover {
+            background: blanchedalmond;
+        }
+        
+        
+        .row {
+            min-height: 30px;
+        }
+        
+    </style>
+
+
+
+    <setting node="menu_breadcrumb">
+        <item1>
+            <link>/</link>
+            <label>Home</label>
+        </item1>
+
+          <item2>
+            <label>Nastavenie user</label>
+        </item2>
+        
+    </setting>
+
+    <component source="/component/breadcrumb" />
+    <component source="/component/logged_user" />
+
+
+    <div class="container">
+        <div style="min-height: 30px" />
+        
+        
+        <div class="user-panel" rola="0">
+            <div>
+                <div style=" min-height: 4px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative; border-radius: 2px;">
+                    <div style=" position: absolute; color: rgba(255,255,255,0.5); bottom: 5px">Cakajuce autorizacie</div>
+                </div>
+            </div>
+            <div >
+
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="user-panel" rola="1000">
+            <div>
+                <div style=" min-height: 4px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative; border-radius: 2px;">
+                    <div style=" position: absolute; color: rgba(255,255,255,0.5); bottom: 5px">Administrator</div>
+                </div>
+            </div>
+            <div>
+
+                <div class="row">
+
+                </div>
+                
+            </div>
+        </div>
+
+        
+        <getRest node="centrum">
+            <trieda>centrum.listCentrum</trieda>
+        </getRest>
+        <for data="centrum">
+            <div class="user-panel" rola="100" centrum="{{model.id_model}}">
+                <div>
+                    <div style=" min-height: 4px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0)); position: relative; border-radius: 2px;">
+                        <div style=" position: absolute; color: rgba(255,255,255,0.5); bottom: 5px"><font style="color:rgba(255,255,255,0.3)">Centrum:</font><span style="font-weight: bold"> {{data.label}}</span></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row">
+
+                    </div>
+                </div>
+            </div>
+        </for>
+        
+
+        <div class="userAll">
+                <getRest node="users">
+                    <trieda>user.getUserAll</trieda>
+                </getRest>
+                <div class="row">
+                    <for data="users">
+                        <component source="/obsah/admin/model" data="model" />
+                    </for>
+                </div>
+            
+
+        </div>
+        
+        
+        <component source="/obsah/fragment" />
+
+    </div>
+
+
+        
+        
+
+    <script cmd="base64" src ="user.js" />
+
+
+    <script cmd="base64">
+
+        page.menu.addMenu("Pridat centrum", "javascript: page.monitor.create_centrum()", "/assets/svg/person.svg", "--bee-player-card");
+        page.menu.addMenu("Pridat uzivatela", "javascript: page.monitor.create_user()", "/assets/svg/person.svg", "--bee-player-card");
+
+
+    </script>
+
+</div>

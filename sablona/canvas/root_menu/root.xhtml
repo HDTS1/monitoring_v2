@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <style cmd="base64">
+        .border-gradient {
+            position: relative;
+            padding-bottom: 3px;
+            padding-left: 15px;
+        }
+
+        .border-gradient::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        }
+    </style>
+    
+
+    <div>
+        <if data="menu_additional.0">
+            <div class="border-gradient">
+                <div>Additional</div>
+            </div>
+
+            <div style="padding: 5px 15px 5px 15px">
+                <div class="row">
+
+                        <for data="menu_additional">
+                            <div class="col-6 p-0">
+                                <div class="canvas-b-kocka">
+                                    <component source="/component/menu/item" />
+                                </div>
+                            </div>
+                        </for>
+
+                    </div>
+            </div>
+        </if>
+
+        <div class="border-gradient">
+            <div>Main</div>
+        </div>
+
+        <div style="padding: 5px 15px 5px 15px">
+            <div class="row">
+
+                    <for data="menu_main">
+                        <div class="col-6 p-0">
+                            <div class="canvas-b-kocka">
+                                <component source="/component/menu/item" />
+                            </div>
+                        </div>
+                    </for>
+
+                </div>
+        </div>
+
+    </div>   
+
+</root>

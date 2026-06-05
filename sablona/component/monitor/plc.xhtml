@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div style="padding: 15px; border: 1px solid gray; border-radius: 10px; margin: 10px; box-shadow: 0px 0px 5px rgba(255,255,255,0.5); background: rgba(255,255,255,0.1)">
+    
+    <style cmd="base64">
+        
+        div.plc-container {
+            background: rgba(200,0,0,0.4); 
+            margin:5px; 
+            border-radius:5px;
+        }
+        
+        div.plc-container:hover {
+            background: rgba(0,0,200,0.4); 
+        }
+        
+        
+        
+        button.event-plc {
+            clip-path: polygon(0% 0%, 100% 0%, 100% calc( 100% - 20px), calc( 100% - 20px) 100%, 0% 100%);
+
+        }
+        
+        
+        button.event-plc > div {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            
+        }
+       
+        
+        
+
+        @keyframes blink_alarm {
+          0% {
+             transform: scale(1);
+          }
+
+          50% {
+            transform: scale(1.2);
+          }
+
+          100% {
+            transform: scale(1);
+          }
+        }
+        
+        
+        
+        button.event-plc > div:first-child > div:first-child {
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px;
+            min-width: 28px;
+            height: 28px;
+            border: 1px solid rgba(0,0,0,0.8);
+            transform:  translate(0px, 7px);
+            box-shadow: 0px 0px 10px rgba(255,255,255,0.5);
+            
+
+            
+        }
+        
+        button.event-plc[event='F'] > div:first-child > div:first-child {
+            background:  rgba(0,0,200,0.6);
+            border: 1px solid rgba(0,0,200,0.8);
+        }
+        
+        button.event-plc[event='O'] > div:first-child > div:first-child {
+            background:  orangered;
+            border: 1px solid orange;
+        }
+
+        button.event-plc[event='O'] > div:first-child > div:first-child {
+            background:  orangered;
+            border: 1px solid orange;
+        }
+        
+        
+        
+        button.event-plc[event='A'] > div:first-child > div:first-child {
+            background:  rgba(200,0,0,0.6);
+            border: 1px solid rgba(200,0,0,0.8);
+            animation: blink_alarm 0.5s ease-in-out infinite;
+            -webkit-animation: blink_alarm 0.5s ease-in-out infinite;
+        }
+        
+        button.event-plc[event='L'] > div:first-child > div:first-child {
+            background:  rgba(200,0,0,0.6);
+            border: 1px solid rgba(200,0,0,0.8);
+            animation: blink_alarm 0.5s ease-in-out infinite;
+            -webkit-animation: blink_alarm 0.5s ease-in-out infinite;
+        }
+        
+        button.event-plc[event='P'] > div:first-child > div:first-child {
+            background:  rgba(200,0,0,0.6);
+            border: 1px solid rgba(200,0,0,0.8);
+            animation: blink_alarm 0.5s ease-in-out infinite;
+            -webkit-animation: blink_alarm 0.5s ease-in-out infinite;
+        }
+        
+        button.event-plc[event='M'] > div:first-child > div:first-child {
+            background:   #5446bd;
+            border: 1px solid  #0000c5;
+            animation: blink_alarm 0.5s ease-in-out infinite;
+            -webkit-animation: blink_alarm 0.5s ease-in-out infinite;
+        }
+        
+        button.event-plc[event='C'] > div:first-child > div:first-child {
+            background:     #007200;
+            border: 1px solid #5e7734;
+            animation: blink_alarm 0.5s ease-in-out infinite;
+            -webkit-animation: blink_alarm 0.5s ease-in-out infinite;
+        }
+        
+        
+        
+        
+        button.event-plc[event='H'] > div:first-child > div:first-child {
+            background:   #C32148;
+            border: 1px solid  #d37337;
+            animation: blink_alarm 0.5s ease-in-out infinite;
+            -webkit-animation: blink_alarm 0.5s ease-in-out infinite;
+        }
+        
+        
+        button.event-plc[state='60']{
+            background: rgba(0,200,0,0.4);
+        }
+        
+        button.event-plc[state='360']{
+            background: rgba(200,0,0,0.4);
+        }
+        
+        
+        div.notify-state {
+            position: relative;
+            min-height: 22px;
+        }
+        
+        div.notify-state > div {
+            position: absolute;
+            display: flex;
+            left: -10px;
+            top: 2px;
+        }
+        
+        div.notify-state > div > div {
+            min-width: 22px;
+        }
+        
+        div.notify-state > div > div{
+            opacity: 0.3;
+            filter: grayscale(0.9);
+            text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
+        }
+        
+        div.notify-state > div > div[state='1']{
+            opacity: 1;
+            filter: grayscale(0);
+        }
+        
+        div.on_off:after {
+            content: '\F5D9';
+            font-family: bootstrap-icons !important;
+            color: rgba(255, 165, 0,0.8);
+ 
+        }
+        
+        div.alarm:after {
+            content: '\F334';
+            font-family: bootstrap-icons !important;
+            color: rgba(240,0,0,0.8);
+        }
+        
+        div.servis:after {
+            content: '\F3E3';
+            font-family: bootstrap-icons !important;
+            color: rgba(0,0,250,0.8);
+        }
+        
+        div.setting:after {
+            content: '\F101';
+            font-family: bootstrap-icons !important;
+            color: green;
+        }
+        
+        .view-container[view='0']{
+            display: none;
+        }
+        
+    </style>
+    
+    
+    
+    
+    <div class="p-1" style="color: rgba(255,255,255,0.6)">PLC</div>
+    <div style="padding: 10px">
+        <div id="plc" class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 p-0">
+                <div>Load data ........</div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script cmd="base64" src="plc.js"/>  
+</div>

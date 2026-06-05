@@ -1,0 +1,15 @@
+{
+    "template": "/root",
+    "template_path": "/sablona",
+    "class_path": "/class",
+    "source1":"/../beesport.palo",
+
+    "seo": {
+        "title": "HDTS Monitoring",
+        "description": "Specialized hockey training facilities for development of players and teams",
+        "protokol": "https",
+        "server": "monitoring.beesport.online",
+        "url": "/",
+        "foto_path": ""
+    }
+}

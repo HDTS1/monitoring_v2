@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+
+    
+    
+    
+    <style cmd="base64">
+
+ 
+        
+    </style>
+
+
+    
+    
+    <setting node="menu_breadcrumb">
+        <item1>
+            <link>/</link>
+            <label>Home</label>
+        </item1>
+        
+    </setting>
+
+    <component source="/component/breadcrumb" />
+    <component source="/component/logged_user" />
+
+    
+    <div class="container">
+        <getRest node="camera">
+            <trieda>centrum.list_camera</trieda>
+            <parameter>
+                <ip>100.73.100.115</ip>
+            </parameter>
+        </getRest> 
+
+
+        
+        <div class="p-1">
+            <div class="row">
+                <for data="camera">
+
+                    <getRest node="foto">
+                        <trieda>centrum.getCameraImage</trieda>
+                        <parameter>
+                            <ip>100.73.100.115</ip>
+                            <id>{{id}}</id>
+                        </parameter>
+                    </getRest> 
+
+                    
+                    <div class="col-12 col-md-6 col-lg-4 p-0">
+                        <div style="position:  relative; margin: 3px; border: 2px solid gray; border-radius: 5px; overflow:  hidden">
+                            <div style="position: absolute; left: 0px; right: 0px; background: rgba(0,0,0,0.8); padding: 3px 5px 3px 5px">
+                                <div>{{name}}</div>
+                            </div>
+                            <img src="/source/camera/{{foto}}" style=" width: 100%; height: auto" />
+
+                        </div>
+                    </div>
+                </for>
+            </div>
+            
+        </div>
+        
+        
+  
+        
+        
+        <!--
+        <img src="{{camera.getCameraGrabs}}" style=" width: 100%; height: auto" />
+        -->
+   
+        
+        
+    </div>
+
+
+    
+    
+    <script cmd="base64">
+        
+        // page.menu.addMenu("Pridat centrum", "/centrum/add", "/assets/svg/person.svg", "--bee-player-card");
+        /*
+        page.menu.addMenu("Add test plan", "javascript:page.start.createItem.test_plan()", "/assets/svg/person.svg");
+        page.menu.addMenu("Add training plan", "javascript:page.start.createItem.training_plan()", "/assets/svg/person.svg");
+
+         */
+    </script>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

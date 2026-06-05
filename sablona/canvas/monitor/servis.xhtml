@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <div item="form" >
+    
+    <style cmd="base64">
+        label.frm-label {
+            color: gray;
+        }
+        
+        label.frm-label::after{
+            background: inherit !important;
+        }
+        .form-floating input {
+            background:  whitesmoke;
+        }
+        
+        .form-floating select {
+            background:  whitesmoke;
+        }
+        
+
+        /*is-invalid*/
+    </style>
+    
+    
+    
+    <div>
+        <div class="form-floating mb-2" >
+          <input type="text" class="form-control "   placeholder="Service name" data-item="label" test="hodnota" />
+          <label  class="frm-label">Service name</label>
+        </div>
+    </div>
+    
+    <div>
+        <div class="form-floating mb-2" >
+            <select class="form-select"  aria-label="Floating label select example" data-item="group">
+                <getRest node="kategory">
+                    <trieda>service.getKategory</trieda>
+                </getRest>  
+                <for data="kategory">
+                    <option value="{{model.id_model}}">{{data.label}}</option>
+                </for>
+            </select>
+
+          <label  class="frm-label">Kategory service</label>
+        </div>
+    </div>
+    
+    
+    <div>
+        <div class="form-floating mb-2">
+          <input type="text" class="form-control "  placeholder="Hosting name | IP address" data-item="host" test="hodnota"/>
+          <label class="frm-label">Hosting name | IP address</label>
+        </div>
+    </div>
+    
+    <div>
+        <div class="form-floating mb-2">
+          <input  type="text" class="form-control "  placeholder="Port number" data-item="port" test="number"/>
+          <label class="frm-label">Port number</label>
+        </div>
+    </div>
+    
+    <div style=" min-height: 15px" />
+    
+    <div>
+        <button class="btn btn-primary w-100" item="cmd">Zapisat</button>
+    </div>
+    
+</div>
+</div>

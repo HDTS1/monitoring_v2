@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div>
+    <div item="form" id="centrum_setting" data="{{*}}">
+
+        <style cmd="base64">
+            label.frm-label {
+                color: gray;
+            }
+
+            label.frm-label::after{
+                background: inherit !important;
+            }
+            .form-floating input {
+                background:  whitesmoke;
+            }
+
+            .form-floating select, textarea {
+                background:  whitesmoke;
+            }
+
+            .form-floating textarea {
+                background:  whitesmoke;
+            }
+            
+            
+            
+            div.nastavenie {
+                padding: 5px 0px 10px 0px;
+            }
+            
+            div.nastavenie-value {
+                 background: rgba(255,255,255,0.1);
+                 border-radius: 0px 0px 5px 5px;
+                 padding: 5px 10px 5px 10px;
+                 margin: 1px 0px 5px 0px;
+            }
+            
+            button.nastavenie {
+                border-radius: 5px 5px 0px 0px;
+            }
+            
+            div.camera {
+                border-bottom: 1px dotted rgba(255,255,255,0.6);
+            }
+            
+            
+            div.camera > div:nth-child(1){
+                color: rgba(255,255,255,0.6);
+            }
+            
+            div.camera > div:nth-child(2) {
+                text-align: right;
+            }
+            
+        </style>
+
+
+
+        <div>
+            <div class="form-floating mb-2" >
+                <input type="text" class="form-control "   placeholder="Centrum name" data-item="label" test="hodnota" />
+                <label  class="frm-label">Centrum</label>
+            </div>
+        </div>
+
+        <div class="nastavenie">
+            <button class="btn btn-primary w-100 nastavenie" onclick="page.centrum.listTeplota(this)">Teplomer</button>
+            <div class="nastavenie-value" item="teplomer"></div>
+        </div>
+        
+        <div class="nastavenie">
+            <button class="btn btn-primary w-100 nastavenie" onclick="page.centrum.listHST(this)">HST</button>
+            <div class="nastavenie-value" item="plc"></div>
+        </div>
+        
+         <div class="nastavenie">
+            <button class="btn btn-primary w-100 nastavenie" onclick="page.centrum.listCamera(this)">Kamera</button>
+            <div class="nastavenie-value" item="camera"></div>
+        </div>
+        
+        <div>
+            <div class="form-floating mb-2" >
+                <select class="form-select"  aria-label="" data-item="jednotka" value="{{kluc.jednotka}}">
+                        <option value="1">Metricke</option>
+                        <option value="2">Imperialne</option>
+                </select>
+
+                <label  class="frm-label">Jednotky</label>
+            </div>
+        </div>
+        
+         <div>
+            <div class="form-floating mb-2" >
+                <select class="form-select"  aria-label="" data-item="casove_pasmo" value="{{kluc.casove_pasmo}}">
+                        <getRest node="pasmo">
+                            <trieda>centrum.casove_pasmo</trieda>
+                        </getRest>
+                    
+                        <for data="pasmo">
+                            <option value="{{value}}">{{label}}</option>
+                        </for>
+                </select>
+
+                <label  class="frm-label">Casove pasmo</label>
+            </div>
+        </div>
+        
+        
+        <div class="form-floating  mb-2">
+            <textarea class="form-control" placeholder="Poznamka" aria-label="" data-item="poznamka" style=" min-height: 80px" value="{{kluc.poznamka}}"></textarea>
+          <label class="frm-label" >Poznamka</label>
+        </div>
+        
+        <div>
+            <div class="form-floating mb-2" >
+                <input type="text" class="form-control "   placeholder="Centrum name" data-item="ip_range" value="{{kluc.ip_range}}" />
+                <label  class="frm-label">IP Range</label>
+            </div>
+        </div>
+
+        
+        <div style=" min-height: 15px" />
+
+        <div>
+            <button class="btn btn-success w-100" item="cmd">Set centrum</button>
+        </div>
+
+    </div>
+        
+        
+        <script cmd="base64" src="setting.js" />
+        
+</div>
