@@ -319,12 +319,13 @@ class monitor extends \service\baseExtend {
 
     
     public function listPapago(){
-        $sql = "SELECT a.hodnota AS teplomer, MAX(a.cas_create) AS last_zaznam
-        FROM model_data a
-        JOIN model_data b ON a.id_model=b.id_model AND b.kluc='value'
-        WHERE a.full_path RLIKE '^papago' AND a.kluc='name' AND b.hodnota > -99
-        GROUP BY a.hodnota
-        ORDER BY a.hodnota";
+        $sql = "SELECT b.hodnota AS teplomer, MAX(a.cas_create) AS last_zaznam
+        FROM model a
+        JOIN model_data b ON a.id_model=b.id_model AND b.kluc='name'
+        JOIN model_data c ON a.id_model=c.id_model AND c.kluc='value'
+        WHERE a.model='papago_live' AND c.hodnota > -99
+        GROUP BY b.hodnota
+        ORDER BY b.hodnota";
         
         $db = $this->getDB();
         
@@ -627,14 +628,14 @@ class monitor extends \service\baseExtend {
         ";
         
 
-        $sql = "with zaznam AS (SELECT b.hodnota AS `name`, c.hodnota AS `date_time`, round(d.hodnota) AS `value`,
+         $sql = "with zaznam AS (SELECT b.hodnota AS `name`, c.hodnota AS `date_time`, round(d.hodnota) AS `value`,
         if(LAG(round(d.hodnota)) OVER (ORDER BY convert(c.hodnota, DATETIME))=round(d.hodnota),1,0) AS xx
         FROM model a
         JOIN model_data b ON a.id_model = b.id_model AND b.kluc = 'name'
         JOIN model_data c ON a.id_model = c.id_model AND c.kluc = 'date_time'
         JOIN model_data d ON a.id_model = d.id_model AND d.kluc = 'value'
-        WHERE a.model='papago' 
-        and date(c.hodnota) BETWEEN :from AND :to 
+        WHERE a.model='papago_live' 
+        and c.hodnota BETWEEN :from AND :to 
         AND d.hodnota > -99 AND b.hodnota = :teplomer
         ORDER BY convert(c.hodnota, DATETIME))
         SELECT NAME,date_time, `value` FROM zaznam
@@ -1598,12 +1599,19 @@ class monitor extends \service\baseExtend {
         
         
         $kluc = md5("dataGrafTeplotaAdmin");
-        \app\cash::delete($kluc);
+        // \app\cash::delete($kluc); // Commented out to allow Memcached cache to persist for 5 minutes.
         
         
         $db = $this->getDB();
         $db->setModel("papago", $this->parameter);
-        //$db->setModel("papago1", $this->parameter);
+        
+        // Save to papago_live for the 24h dashboard graph
+        $db->setModel("papago_live", $this->parameter);
+        
+        // Auto-prune papago_live records older than 26 hours
+        $sql = "DELETE FROM model WHERE model = 'papago_live' AND cas_create < DATE_SUB(NOW(), INTERVAL 26 HOUR)";
+        $p = $db->add_sql($sql, "clear_live");
+        $db->cmd();
         
         return $this->output("OK");
     }
