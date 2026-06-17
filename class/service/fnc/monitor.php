@@ -361,9 +361,11 @@ class monitor extends \service\baseExtend {
         });
         
         
-        $result = array_map(function($item){
-            $x = $this->getPLCSetting($item["plc"]);
-            $item["setting"]=$x;
+        // FIX #2: batch-load all settings in one query instead of one query per PLC
+        $allSettings = $this->getAllPLCSettings();
+        $result = array_map(function($item) use ($allSettings) {
+            $name = $item["plc"];
+            $item["setting"] = $allSettings[$name] ?? ["name" => $name, "favorite" => 1];
             return $item;
         }, $result);
         
@@ -1099,6 +1101,64 @@ class monitor extends \service\baseExtend {
         
         return $data;
     }
+
+    /**
+     * FIX #2 — Batch-load ALL plc_advance settings in a single SQL query.
+     * Returns an associative array keyed by PLC name (e.g. 'PLC-001' => [...data...]).
+     * Replaces the N+1 pattern of calling getPLCSetting() once per PLC.
+     */
+    private function getAllPLCSettings(): array {
+        $db = $this->getDB();
+        $sql = "SELECT a.id_model, b.kluc, b.hodnota
+                FROM model a
+                JOIN model_data b ON a.id_model = b.id_model
+                WHERE a.model = 'plc_advance'
+                ORDER BY a.id_model";
+
+        $p = $db->add_sql($sql, "all_plc_settings");
+        $result = $db->cmd();
+        $rows = $result["all_plc_settings"];
+
+        // Group EAV rows by id_model into flat key=>value arrays
+        $models = [];
+        foreach ($rows as $row) {
+            $models[$row["id_model"]][$row["kluc"]] = $row["hodnota"];
+        }
+
+        // Decode dot-notation nested keys and index by name
+        $map = [];
+        foreach ($models as $flatData) {
+            $decoded = \db\array_model::decode($flatData);
+            if (isset($decoded["name"])) {
+                $map[$decoded["name"]] = $decoded;
+            }
+        }
+        return $map;
+    }
+
+    /**
+     * FIX #3 — Batch-load all PLC labels that have a valid setPLC configuration.
+     * Returns an associative array of label => true for fast isset() lookup.
+     * Replaces the N+1 pattern of calling overitZaznam('setPLC',...) once per PLC.
+     */
+    private function batchLoadValidSetPLC(): array {
+        $db = $this->getDB();
+        $sql = "SELECT DISTINCT d.hodnota AS plc
+                FROM model a
+                JOIN model_data d ON a.id_model = d.id_model AND d.kluc = 'plc'
+                JOIN model_data v ON a.id_model = v.id_model AND v.kluc = 'valid' AND v.hodnota = '1'
+                WHERE a.model = 'setPLC'";
+
+        $p = $db->add_sql($sql, "valid_setplc");
+        $result = $db->cmd();
+        $rows = $result["valid_setplc"];
+
+        $map = [];
+        foreach ($rows as $row) {
+            $map[$row["plc"]] = true;
+        }
+        return $map;
+    }
     
     public function getPLCSettingData(){
         return $this->output($this->getPLCSetting($this->parameter["kluc"]));
@@ -1190,6 +1250,10 @@ class monitor extends \service\baseExtend {
         }
         
         $data = array();
+
+        // FIX #2 + FIX #3: pre-load both lookup tables in 2 queries before the loop
+        $allSettings   = $this->getAllPLCSettings();
+        $validSetPLC   = $this->batchLoadValidSetPLC();
         
         
         foreach ($res as $value) {
@@ -1209,9 +1273,8 @@ class monitor extends \service\baseExtend {
                 $data[$value["label"]]["icon"]["servis"]=$x[10];
                 
 
-                
-                $rr = $db->overitZaznam("setPLC", array("plc"=>$value["label"], "valid"=>1));
-                $data[$value["label"]]["icon"]["setting"]= $rr ? 1 : 0;
+                // FIX #3: use pre-loaded map instead of one DB query per PLC
+                $data[$value["label"]]["icon"]["setting"] = isset($validSetPLC[$value["label"]]) ? 1 : 0;
                
                 
             } else {
@@ -1222,9 +1285,11 @@ class monitor extends \service\baseExtend {
         
 
         $data = array_values($data);
-        
-        $data = array_map(function($item){
-            $item["setting"]= $this->getPLCSetting($item["label"]);
+
+        // FIX #2: use pre-loaded map instead of one DB query per PLC
+        $data = array_map(function($item) use ($allSettings) {
+            $name = $item["label"];
+            $item["setting"] = $allSettings[$name] ?? ["name" => $name, "favorite" => 1];
             return $item;
         }, $data);
         
