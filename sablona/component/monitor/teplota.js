@@ -289,9 +289,21 @@
     
 
 
-    let ddd = $("div.chart-container[teplota-data]").attr("teplota-data");
-    ddd = $.parseJSON(ddd);
-    createChart(ddd);
+    let containerEl = $("div.chart-container");
+    let canvasEl = $("#myChart");
+    canvasEl.hide();
+    
+    containerEl.append('<div class="chart-loading" style="text-align: center; padding: 100px 20px; color: rgba(255,255,255,0.5);"><i class="fa fa-spinner fa-spin fa-2x"></i><br><br>Načítavam graf teplôt...</div>');
+
+    zapis("/rest/monitor/dataGrafTeplotaAdmin", {data:null, json:true}, function(odpoved){
+        containerEl.find(".chart-loading").remove();
+        if (odpoved.result && odpoved.data) {
+            canvasEl.show();
+            createChart(odpoved.data);
+        } else {
+            containerEl.append('<div style="text-align: center; padding: 100px 20px; color: #ff5b5b;">Nepodarilo sa načítať graf teplôt.</div>');
+        }
+    });
     
 
     

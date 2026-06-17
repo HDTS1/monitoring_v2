@@ -27,7 +27,7 @@ file_put_contents(root."/papago/test.json", json_encode($vystup));
 $kluc=-1;
 
 $t = md5("dataGrafTeplotaAdmin");
-\app\cash::delete($t);
+// \app\cash::delete($t); // Commented out to prevent cache invalidation every 3 seconds on sensor posts.
 
 
 $hodnota = @$vystup["T1V1_value"];
