@@ -1196,41 +1196,28 @@ class monitor extends \service\baseExtend {
 
 
         if(1==1){
-        
-        
-        
-            $sql = "WITH ranked_data AS 
-            ( SELECT a.id_model, a.cas_create, b.hodnota AS `event`, c.hodnota AS label, 
-            d.hodnota AS status_word, e.hodnota AS alarm_word, f.hodnota as `interval`,
-            ROW_NUMBER() OVER(PARTITION BY c.hodnota ORDER BY a.cas_create DESC) AS rn 
+            $sql = "SELECT a.id_model, a.cas_create, b.hodnota AS `event`, c.hodnota AS label, 
+            d.hodnota AS status_word, e.hodnota AS alarm_word, f.hodnota as `interval`
             FROM model a 
             JOIN model_data b ON a.id_model = b.id_model AND b.kluc = 'event' 
             JOIN model_data c ON a.id_model = c.id_model AND c.kluc = 'label'
             JOIN model_data d ON a.id_model = d.id_model AND d.kluc = 'status_word'
             JOIN model_data e ON a.id_model = e.id_model AND e.kluc = 'alarm_word'
-            left JOIN model_data f ON a.id_model = f.id_model AND f.kluc = 'socket_interval'
-
-            WHERE a.model = 'plc' ORDER BY label) 
-            SELECT id_model, cas_create, `event`, label ,status_word, alarm_word,`interval`, rn
-            FROM ranked_data WHERE rn <= 2 AND label RLIKE '^PLC' 
-            ORDER BY label, cas_create DESC";
+            LEFT JOIN model_data f ON a.id_model = f.id_model AND f.kluc = 'socket_interval'
+            WHERE a.model = 'plc_live' AND c.hodnota RLIKE '^PLC'
+            ORDER BY label";
 
             if(@$this->parameter["filter"]){
-                $sql = "WITH ranked_data AS 
-                    ( SELECT a.id_model, a.cas_create, b.hodnota AS `event`, c.hodnota AS label, 
-                    d.hodnota AS status_word, e.hodnota AS alarm_word, f.hodnota as `interval`,
-                    ROW_NUMBER() OVER(PARTITION BY c.hodnota ORDER BY a.cas_create DESC) AS rn 
-                    FROM model a 
-                    JOIN model_data b ON a.id_model = b.id_model AND b.kluc = 'event' 
-                    JOIN model_data c ON a.id_model = c.id_model AND c.kluc = 'label'
-                    JOIN model_data d ON a.id_model = d.id_model AND d.kluc = 'status_word'
-                    JOIN model_data e ON a.id_model = e.id_model AND e.kluc = 'alarm_word'
-                    left JOIN model_data f ON a.id_model = f.id_model AND f.kluc = 'socket_interval'
-
-                    WHERE a.model = 'plc' ORDER BY label) 
-                    SELECT id_model, cas_create, `event`, label ,status_word, alarm_word,`interval`, rn
-                    FROM ranked_data WHERE rn <= 2 AND label RLIKE '^".preg_quote($this->parameter["filter"])."' 
-                    ORDER BY label, cas_create DESC";
+                $sql = "SELECT a.id_model, a.cas_create, b.hodnota AS `event`, c.hodnota AS label, 
+                d.hodnota AS status_word, e.hodnota AS alarm_word, f.hodnota as `interval`
+                FROM model a 
+                JOIN model_data b ON a.id_model = b.id_model AND b.kluc = 'event' 
+                JOIN model_data c ON a.id_model = c.id_model AND c.kluc = 'label'
+                JOIN model_data d ON a.id_model = d.id_model AND d.kluc = 'status_word'
+                JOIN model_data e ON a.id_model = e.id_model AND e.kluc = 'alarm_word'
+                LEFT JOIN model_data f ON a.id_model = f.id_model AND f.kluc = 'socket_interval'
+                WHERE a.model = 'plc_live' AND c.hodnota RLIKE '^".preg_quote($this->parameter["filter"])."' 
+                ORDER BY label";
             }
 
             $db = $this->getDB();

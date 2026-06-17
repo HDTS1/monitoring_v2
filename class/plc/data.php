@@ -28,6 +28,23 @@ class data {
         $data["md5"]=$md5;
         $kluc = $db->setModel($table, $data);
         
+        
+        // Option B: Maintain a single 'plc_live' record per PLC label
+        if ($table === 'plc') {
+            $sqlDel = "DELETE FROM model WHERE model = 'plc_live' AND id_model IN (
+                SELECT id_model FROM (
+                    SELECT a.id_model FROM model a
+                    JOIN model_data b ON a.id_model = b.id_model AND b.kluc = 'label'
+                    WHERE a.model = 'plc_live' AND b.hodnota = :label
+                ) tmp
+            )";
+            $pDel = $db->add_sql($sqlDel, "zmazat_live");
+            $pDel->def("label", $data["label"]);
+            $db->cmd();
+            
+            $db->setModel("plc_live", $data);
+        }
+
         $sql = "with zaznam AS (SELECT a.id_model, ROW_NUMBER() OVER(PARTITION BY b.hodnota ORDER BY  a.cas_create DESC) AS rn
         FROM model a
         JOIN model_data b ON a.id_model = b.id_model AND b.kluc = 'md5'
