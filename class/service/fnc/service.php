@@ -55,48 +55,8 @@ class service extends \service\baseExtend {
     }
 
     public function sendServerData($data, $metoda="socket",$server= null,$port= null){
-            if(!$port){
-                $port = $this->port;
-            }
-            if(!$server){
-                $server = $this->serverTest;
-            }
-            
-            
-            
-        
-            
-
-            $Request = array(
-                "metoda"=>$metoda,
-                "data"=>$data
-            );
-
-            $Request = json_encode($Request);
-            $Request = $this->encryptMessage($Request);
-            
-        
-            $address = "tcp://$server:$port";
-            $socket = stream_socket_client($address, $errno, $errstr, 30);
-
-            if (!$socket) {
-                return array("data"=>"server nedostupny", "result"=>false);
-            } else {
-                
-                
-                
-                fwrite($socket, $Request);
-                $vystup = "";
-                
-                while (!feof($socket)) {
-                    $vystup .= fgets($socket, 1024);
-                }
-                
-                fclose($socket);
-                $vystup = $this->decryptMessage($vystup);
-                
-                return $vystup;
-           }
+        // Stubbed to prevent blocking TCP calls to the decommissioned external server.
+        return array("data"=>"server nedostupny", "result"=>false);
     }
     
     
