@@ -1,15 +1,14 @@
 (function(){
     let plc = function(data){
         
-        let canvas_plc = null;
+        let active_plc_name = null;
         
         let history = function(){
-            let plc = $(this).attr("plc");
-            canvas_plc.hide();
+            page.start.closeCanvas("info_plc");
             
             page.start.setCanvas("history_plc",{
                     title:"History ",
-                    data: {plc:plc},
+                    data: {plc: active_plc_name},
                     template: "/canvas/monitor/history"
             });
         };
@@ -19,10 +18,10 @@
 
                 let button = $(this).find("button");
                 let kluc = $(button).attr("kluc");
+                active_plc_name = $(button).attr("name");
                 
                 
-                
-                canvas_plc = page.start.setCanvas("info_plc",{
+                page.start.setCanvas("info_plc",{
                     title:"Info PLC",
                     template: "/canvas/monitor/record",
                     data: {
@@ -153,7 +152,7 @@
 
     let loadData = function(){
         loadDataComplete=false;
-        let ajaxZapis = zapis("/rest/monitor/plc",{data:null,json:true},function(odpoved){
+        ajaxZapis = zapis("/rest/monitor/plc",{data:null,json:true},function(odpoved){
             container = new plc(odpoved.data);
             //loadDataComplete=true;
             ajaxZapis=null;
