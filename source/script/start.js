@@ -2996,8 +2996,8 @@ page.start = {
         
         
         let _setTemplateObsah = function(template, data=null){
-                _promise.then(function(obj){
-                    promiseTemplate = new Promise(function(resolve, reject){
+                promiseTemplate = new Promise(function(resolve, reject){
+                    _promise.then(function(obj){
                         page.tool.createTemplateText(template,data,function(obsah){
                             
 
