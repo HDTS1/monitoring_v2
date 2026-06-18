@@ -5,13 +5,22 @@
         
         let history = function(){
             console.log("PLC history() called. active_plc_name:", active_plc_name);
-            page.start.closeCanvas("info_plc");
             
-            page.start.setCanvas("history_plc",{
-                    title:"History ",
-                    data: {plc: active_plc_name},
-                    template: "/canvas/monitor/history"
-            });
+            let showHistory = function(){
+                page.start.setCanvas("history_plc",{
+                        title:"History ",
+                        data: {plc: active_plc_name},
+                        template: "/canvas/monitor/history"
+                });
+            };
+
+            let infoCanvas = page.start._canvas["info_plc"];
+            if (infoCanvas && infoCanvas.boostrap && $(infoCanvas.el).hasClass("show")) {
+                $(infoCanvas.el).one("hidden.bs.offcanvas", showHistory);
+                page.start.closeCanvas("info_plc");
+            } else {
+                showHistory();
+            }
         };
         
         let click = function(){
