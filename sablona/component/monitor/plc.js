@@ -4,6 +4,7 @@
         let active_plc_name = null;
         
         let history = function(){
+            console.log("PLC history() called. active_plc_name:", active_plc_name);
             page.start.closeCanvas("info_plc");
             
             page.start.setCanvas("history_plc",{
@@ -14,12 +15,12 @@
         };
         
         let click = function(){
-
-
+                console.log("PLC click() triggered. 'this' is:", this);
                 let button = $(this).find("button");
+                console.log("Found button:", button);
                 let kluc = $(button).attr("kluc");
                 active_plc_name = $(button).attr("name");
-                
+                console.log("Extracted attributes - kluc:", kluc, "active_plc_name:", active_plc_name);
                 
                 page.start.setCanvas("info_plc",{
                     title:"Info PLC",
@@ -28,6 +29,7 @@
                         id_model: kluc
                     },
                     cmd: function(c){
+                        console.log("info_plc canvas loaded. Binding history to button#history_event");
                         $(c.el).find("button#history_event").click(history);
                     }
 
