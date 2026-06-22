@@ -12,8 +12,13 @@
     };
 
     let history = function(){
-        page.start.closeCanvas("info_plc");
-        showHistory();
+        let infoCanvasEl = $(this).closest(".offcanvas");
+        if (infoCanvasEl.length && infoCanvasEl.hasClass("show")) {
+            infoCanvasEl.one("hidden.bs.offcanvas", showHistory);
+            page.start.closeCanvas("info_plc");
+        } else {
+            showHistory();
+        }
     };
 
     // Event delegation: works immediately even before template finishes loading
