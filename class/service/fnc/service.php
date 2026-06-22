@@ -28,7 +28,7 @@ class service extends \service\baseExtend {
         //return base64_encode($message);
         
         
-        $encryptionKey = $this->encryptionKey ; 
+        $encryptionKey = getenv('PROXY_KEY') ?: $this->encryptionKey ; 
         
         $cipherMethod = "AES-256-CBC";
         $ivLength = openssl_cipher_iv_length($cipherMethod);
@@ -42,7 +42,7 @@ class service extends \service\baseExtend {
     private function decryptMessage($encryptedMessage) {
         //return base64_decode($encryptedMessage);
         
-        $encryptionKey = $this->encryptionKey ; 
+        $encryptionKey = getenv('PROXY_KEY') ?: $this->encryptionKey ; 
         
         $cipherMethod = "AES-256-CBC";
         $ivLength = openssl_cipher_iv_length($cipherMethod);
@@ -55,8 +55,39 @@ class service extends \service\baseExtend {
     }
 
     public function sendServerData($data, $metoda="socket",$server= null,$port= null){
-        // Stubbed to prevent blocking TCP calls to the decommissioned external server.
-        return array("data"=>"server nedostupny", "result"=>false);
+        if(!$port){
+            $port = getenv('PROXY_PORT') ?: $this->port;
+        }
+        if(!$server){
+            $server = getenv('PROXY_HOST') ?: $this->serverTest;
+        }
+
+        $Request = array(
+            "metoda"=>$metoda,
+            "data"=>$data
+        );
+
+        $Request = json_encode($Request);
+        $Request = $this->encryptMessage($Request);
+
+        $address = "tcp://$server:$port";
+        $socket = @stream_socket_client($address, $errno, $errstr, 30);
+
+        if (!$socket) {
+            return array("data"=>"server nedostupny", "result"=>false);
+        } else {
+            fwrite($socket, $Request);
+            $vystup = "";
+
+            while (!feof($socket)) {
+                $vystup .= fgets($socket, 1024);
+            }
+
+            fclose($socket);
+            $vystup = $this->decryptMessage($vystup);
+
+            return $vystup;
+       }
     }
     
     

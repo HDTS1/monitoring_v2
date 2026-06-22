@@ -1,47 +1,37 @@
 (function(){
+
+    // Module-level state so it persists across PLC re-renders
+    let active_plc_name = null;
+
+    let showHistory = function(){
+        page.start.setCanvas("history_plc",{
+                title:"History ",
+                data: {plc: active_plc_name},
+                template: "/canvas/monitor/history"
+        });
+    };
+
+    let history = function(){
+        page.start.closeCanvas("info_plc");
+        showHistory();
+    };
+
+    // Event delegation: works immediately even before template finishes loading
+    $(document).on("click", "button#history_event", history);
+
     let plc = function(data){
         
-        let active_plc_name = null;
-        
-        let history = function(){
-            console.log("PLC history() called. active_plc_name:", active_plc_name);
-            
-            let showHistory = function(){
-                page.start.setCanvas("history_plc",{
-                        title:"History ",
-                        data: {plc: active_plc_name},
-                        template: "/canvas/monitor/history"
-                });
-            };
-
-            let infoCanvas = page.start._canvas["info_plc"];
-            if (infoCanvas && infoCanvas.boostrap && $(infoCanvas.el).hasClass("show")) {
-                $(infoCanvas.el).one("hidden.bs.offcanvas", showHistory);
-                page.start.closeCanvas("info_plc");
-            } else {
-                showHistory();
-            }
-        };
-        
         let click = function(){
-                console.log("PLC click() triggered. 'this' is:", this);
                 let button = $(this).find("button");
-                console.log("Found button:", button);
                 let kluc = $(button).attr("kluc");
                 active_plc_name = $(button).attr("name");
-                console.log("Extracted attributes - kluc:", kluc, "active_plc_name:", active_plc_name);
                 
                 page.start.setCanvas("info_plc",{
                     title:"Info PLC",
                     template: "/canvas/monitor/record",
                     data: {
                         id_model: kluc
-                    },
-                    cmd: function(c){
-                        console.log("info_plc canvas loaded. Binding history to button#history_event");
-                        $(c.el).find("button#history_event").click(history);
                     }
-
                 });
         };
         
