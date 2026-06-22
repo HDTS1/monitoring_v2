@@ -4,6 +4,7 @@
     let active_plc_name = null;
 
     let showHistory = function(){
+        console.log("plc.js: showHistory() called. active_plc_name:", active_plc_name);
         page.start.setCanvas("history_plc",{
                 title:"History ",
                 data: {plc: active_plc_name},
@@ -12,11 +13,23 @@
     };
 
     let history = function(){
+        console.log("plc.js: history() click handler triggered. 'this' is:", this);
         let infoCanvasEl = $(this).closest(".offcanvas");
+        console.log("plc.js: found infoCanvasEl:", infoCanvasEl, "length:", infoCanvasEl.length);
+        if (infoCanvasEl.length) {
+            console.log("plc.js: infoCanvasEl hasClass('show'):", infoCanvasEl.hasClass("show"));
+        }
+        
         if (infoCanvasEl.length && infoCanvasEl.hasClass("show")) {
-            infoCanvasEl.one("hidden.bs.offcanvas", showHistory);
+            console.log("plc.js: infoCanvasEl is visible. Attaching one-time hidden.bs.offcanvas listener.");
+            infoCanvasEl.one("hidden.bs.offcanvas", function() {
+                console.log("plc.js: hidden.bs.offcanvas fired! Now calling showHistory().");
+                showHistory();
+            });
+            console.log("plc.js: Calling closeCanvas('info_plc')");
             page.start.closeCanvas("info_plc");
         } else {
+            console.log("plc.js: infoCanvasEl is NOT visible/found. Calling showHistory() immediately.");
             showHistory();
         }
     };
