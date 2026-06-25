@@ -2974,9 +2974,14 @@ page.start = {
                 $("body").append(_canvas.el);
                 let oldInstance = bootstrap.Offcanvas.getInstance(_canvas.el[0]);
                 if(oldInstance){
+                    $(_canvas.el).off('hidden.bs.offcanvas');
                     oldInstance.dispose();
                 }
                 _canvas.boostrap = new bootstrap.Offcanvas(_canvas.el[0]); 
+
+                $(_canvas.el).on('hidden.bs.offcanvas', function () {
+                  $(_canvas.el).detach();
+                });
 
                 data[0].boostrap.show();
 
