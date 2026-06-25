@@ -94,8 +94,8 @@
                     $(row).replaceWith(obsah);
                 });
             }
-            
-            
+        }
+        
         if(data.metoda=="deleteService"){
             let row = $("div.service-component[kluc='"+data.data+"']")[0];
             if(row){
