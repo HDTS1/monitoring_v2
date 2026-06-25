@@ -2974,26 +2974,36 @@ page.start = {
                 $("body").append(_canvas.el);
                 _canvas.boostrap = new bootstrap.Offcanvas(_canvas.el[0]); 
 
+                data[0].boostrap.show();
+
                 if(promiseTemplate){
                     promiseTemplate.then(function(tmp){
                         if(typeof cmd === 'function'){
                             cmd(data[0]);
                         }
-
-                        data[0].boostrap.show();
                     });
                 } else {
                     if(typeof cmd === 'function'){
                         cmd(data[0]);
                     }
-
-                    data[0].boostrap.show();
                 }
              });
         };
         
         
         let _setTemplateObsah = function(template, data=null){
+                _promise.then(function(obj){
+                    let containerObsah = $(obj.el).find("div.offcanvas-body");
+                    $(containerObsah).html(
+                        '<div class="d-flex flex-column align-items-center justify-content-center" style="height: 200px; color: rgba(255,255,255,0.7);">' +
+                        '    <div class="spinner-border text-light mb-3" role="status" style="width: 2.5rem; height: 2.5rem;">' +
+                        '        <span class="visually-hidden">Loading...</span>' +
+                        '    </div>' +
+                        '    <div style="font-size: 1rem; font-weight: 500; letter-spacing: 0.05em;">Loading...</div>' +
+                        '</div>'
+                    );
+                });
+
                 promiseTemplate = new Promise(function(resolve, reject){
                     _promise.then(function(obj){
                         page.tool.createTemplateText(template,data,function(obsah){
