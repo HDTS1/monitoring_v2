@@ -52,6 +52,19 @@
                      
                      
                  });
+                 
+                 $(c.el).find("button[item='delete_user']").click(function (){
+                     if(confirm("Naozaj chcete vymazat tohto uzivatela (" + d.username + ")?")){
+                         zapis("/rest/user/deleteUser", {data: {kluc: d.model.id_model}, json:true}, function(odpoved){
+                             if(odpoved.result){
+                                 $(component).remove();
+                                 userCanvas.hide();
+                             } else {
+                                 alert("Chyba pri mazani uzivatela");
+                             }
+                         });
+                     }
+                 });
              }
         });
     };

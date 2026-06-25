@@ -376,6 +376,73 @@ class service extends \service\baseExtend {
 
     }
     
+    public function updateService(){
+        $data = $this->parameter;
+        $id_model = @$data["id_model"];
+        if (!$id_model) {
+            return $this->output("Missing ID", false);
+        }
+        
+        if(@$data['validate']){
+            $test = new \test\parameter($data);
+            foreach ($data['validate'] as $t) {
+                $test->addParameter($t['pole'], $t['test']);
+            }
+            unset($data['validate']);
+
+            $result = $test->test();
+
+            if(!$result['result']){
+                return $this->output($result["data"],false);
+            }
+        } 
+        
+        $this->parameter= $data;
+        if(!@$this->parameter["group"]){
+            $this->parameter["group"]=null;
+        }
+        if(!@$this->parameter["id"]){
+            $this->parameter["id"]= preg_replace("/\s/", "_", $this->parameter["label"]);
+        }
+        $this->parameter["id"] = trim(strtolower($this->parameter["id"]));
+        
+        unset($data["id_model"]);
+        
+        $db = $this->getDB();
+        $db->updateModel($id_model, $data);
+        
+        $p = $db->add_sql("delete from model_cash where id_model = :kluc", "zapis");
+        $p->def("kluc", $id_model);
+        $db->cmd();
+        
+        $this->_notifyService("testDevice", array("id_model" => $id_model));
+        
+        return $this->output($id_model);
+    }
+    
+    public function deleteService(){
+        $data = $this->parameter;
+        $id_model = @$data["id_model"];
+        if (!$id_model) {
+            return $this->output("Missing ID", false);
+        }
+        
+        $db = $this->getDB();
+        $db->deleteModel($id_model);
+        
+        $p = $db->add_sql("delete from model_data where id_model = :kluc", "zaznam_data");
+        $p->def("kluc", $id_model);
+        
+        $p = $db->add_sql("delete from model_cash where id_model = :kluc", "zaznam_cash");
+        $p->def("kluc", $id_model);
+        
+        $db->cmd();
+        
+        $this->_notifyService("deleteService", $id_model);
+        
+        return $this->output(true);
+    }
+    
     
     public function test(){
         

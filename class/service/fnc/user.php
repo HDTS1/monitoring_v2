@@ -374,4 +374,27 @@ class user  extends \service\baseExtend {
         
     }
     
+    public function deleteUser(){
+        $data = $this->parameter;
+        $id_model = @$data["kluc"];
+        if (!$id_model) {
+            return $this->output("Missing ID", false);
+        }
+        
+        $db = $this->getDB();
+        
+        $p = $db->add_sql("delete from model_data where id_model = :kluc", "zaznam_data");
+        $p->def("kluc", $id_model);
+        
+        $p = $db->add_sql("delete from model where id_model = :kluc", "zaznam");
+        $p->def("kluc", $id_model);
+        
+        $p = $db->add_sql("delete from model_cash where id_model = :kluc", "zaznam_cash");
+        $p->def("kluc", $id_model);
+        
+        $res = $db->cmd();
+        
+        return $this->output($res);
+    }
+    
 }
