@@ -907,9 +907,10 @@ class monitor extends \service\baseExtend {
             TIMESTAMPDIFF(MINUTE, LAG(cas_create) OVER (ORDER BY cas_create), cas_create) AS diff,
             if(alarm_word = '0000000000000000', 0,1) as alarm_state
 
-            FROM ranked_data
+                        FROM ranked_data
             WHERE kluc <> prev_value OR prev_value IS NULL
             ORDER BY cas_create desc
+            LIMIT 150
             ";
         
             $db= $this->getDB();
