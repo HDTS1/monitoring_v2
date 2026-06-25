@@ -137,25 +137,11 @@ class system  extends \service\baseExtend {
     }
 
     public function getTemplate(){
-        $kluc =  md5(@$this->parameter["template"]."_". json_encode(@$this->parameter['data']));
-
-        
-        $cash = \app\cash::get($kluc);
-        if($cash){
-            return $this->output($cash);  
-        }
-        
-        
-            
-        
          if(!@$this->parameter["template"] || !is_array(@$this->parameter['data'])){
             return $this->output("", false);
          }
 
-         
          $template = $this->setTemplate($this->parameter["template"], @$this->parameter['data']);
-         
-         \app\cash::set($kluc, $template, 60);
          return $this->output($template);    
     } 
 

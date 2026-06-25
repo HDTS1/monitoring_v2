@@ -199,7 +199,7 @@
     Chart.defaults.borderColor = 'rgba(0,0,0,0.2)';
     Chart.defaults.color = 'white';
 
-    let chart = new Chart(ctx, {
+    chart = new Chart(ctx, {
         type: 'line',
         data: data,
         labels: ['2024-10-24 00:00', '2024-10-24 03:00', '2024-10-24 06:00', '2024-10-24 09:00', '2024-10-24 12:00', '2024-10-24 15:00', '2024-10-24 18:00', '2024-10-24 21:00', '2024-10-24 24:00'],
@@ -292,22 +292,34 @@
     let containerEl = $("div.chart-container");
     let canvasEl = $("#myChart");
     canvasEl.hide();
-    
-    containerEl.append('<div class="chart-loading" style="text-align: center; padding: 100px 20px; color: rgba(255,255,255,0.5);"><i class="fa fa-spinner fa-spin fa-2x"></i><br><br>Načítavam graf teplôt...</div>');
 
-    zapis("/rest/monitor/dataGrafTeplotaAdmin", {data:null, json:true}, function(odpoved){
+    let loadData = function(){
         containerEl.find(".chart-loading").remove();
-        if (odpoved.result && odpoved.data) {
-            canvasEl.show();
-            createChart(odpoved.data);
-        } else {
-            containerEl.append('<div style="text-align: center; padding: 100px 20px; color: #ff5b5b;">Nepodarilo sa načítať graf teplôt.</div>');
+        containerEl.append('<div class="chart-loading" style="text-align: center; padding: 100px 20px; color: rgba(255,255,255,0.5);"><i class="fa fa-spinner fa-spin fa-2x"></i><br><br>Načítavam graf teplôt...</div>');
+
+        zapis("/rest/monitor/dataGrafTeplotaAdmin", {data:null, json:true}, function(odpoved){
+            containerEl.find(".chart-loading").remove();
+            if (odpoved.result && odpoved.data) {
+                // Destroy existing chart before re-rendering
+                if (chart) {
+                    chart.destroy();
+                    chart = null;
+                }
+                canvasEl.show();
+                createChart(odpoved.data);
+            } else {
+                containerEl.append('<div style="text-align: center; padding: 100px 20px; color: #ff5b5b;">Nepodarilo sa načítať graf teplôt.</div>');
+            }
+        });
+    };
+
+    // Auto-discovery: refresh chart when a new papago (thermometer) reading arrives via socket
+    page.start.registerBind("socket", function(data){
+        if(data.metoda === "papago"){
+            loadData();
         }
     });
-    
 
-    
-    
+    loadData();
+
 })();
-
-

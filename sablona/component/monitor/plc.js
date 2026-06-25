@@ -4,21 +4,15 @@
     let active_plc_name = null;
 
     let showHistory = function(plcName){
-        console.log("plc.js: showHistory() called. plcName:", plcName);
         page.start.setCanvas("history_plc",{
                 title:"History ",
                 data: {plc: plcName},
-                template: "/canvas/monitor/history",
-                cmd: function(){
-                    console.log("plc.js: history_plc template ready. Closing info_plc.");
-                    page.start.closeCanvas("info_plc");
-                }
+                template: "/canvas/monitor/history"
         });
     };
 
     let history = function(){
         let plcName = $(this).attr("plc");
-        console.log("plc.js: history() click handler triggered. plcName from attribute:", plcName);
         if (!plcName) {
             plcName = active_plc_name;
         }
@@ -27,6 +21,7 @@
 
     // Event delegation: works immediately even before template finishes loading
     $(document).on("click", "button#history_event", history);
+
 
     let plc = function(data){
         

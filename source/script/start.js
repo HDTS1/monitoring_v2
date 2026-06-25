@@ -2970,16 +2970,12 @@ page.start = {
         
         
         let _show = function(cmd=null){
-            console.log("Canvas _show() called for option:", option);
              Promise.all([_promise]).then(function(data){
-                console.log("Canvas shell _promise resolved. Appending to body and init bootstrap Offcanvas.");
                 $("body").append(_canvas.el);
                 _canvas.boostrap = new bootstrap.Offcanvas(_canvas.el[0]); 
 
                 if(promiseTemplate){
-                    console.log("Canvas has promiseTemplate. Waiting for template compilation...");
                     promiseTemplate.then(function(tmp){
-                        console.log("promiseTemplate resolved. Calling cmd callback and showing offcanvas.");
                         if(typeof cmd === 'function'){
                             cmd(data[0]);
                         }
@@ -2987,9 +2983,7 @@ page.start = {
                         data[0].boostrap.show();
                     });
                 } else {
-                    console.log("Canvas does not have promiseTemplate. Showing offcanvas immediately.");
                     if(typeof cmd === 'function'){
-                        
                         cmd(data[0]);
                     }
 
@@ -3000,17 +2994,12 @@ page.start = {
         
         
         let _setTemplateObsah = function(template, data=null){
-                console.log("setTemplateObsah called. template:", template, "data:", data);
                 promiseTemplate = new Promise(function(resolve, reject){
                     _promise.then(function(obj){
-                        console.log("Fetching template text for:", template);
                         page.tool.createTemplateText(template,data,function(obsah){
-                            console.log("createTemplateText success callback. obsah length:", obsah ? obsah.length : 0);
-
                             obsah = $.parseHTML(obsah, document, true);
                             obsah = $(obsah).html();
 
-                            
                             let containerObsah = $(obj.el).find("div.offcanvas-body");
                             $(containerObsah).empty();
                             $(containerObsah).append(obsah);
