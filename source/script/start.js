@@ -2972,7 +2972,7 @@ page.start = {
         let _show = function(cmd=null){
              Promise.all([_promise]).then(function(data){
                 $("body").append(_canvas.el);
-                _canvas.boostrap = new bootstrap.Offcanvas(_canvas.el[0]); 
+                _canvas.boostrap = bootstrap.Offcanvas.getOrCreateInstance(_canvas.el[0]); 
 
                 data[0].boostrap.show();
 
