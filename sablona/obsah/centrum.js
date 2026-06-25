@@ -266,5 +266,5 @@
             obsah = $.parseHTML(obsah,document,true);
             $("div#plc_view").replaceWith(obsah);
         });
-    });
+    }, true);
 })();

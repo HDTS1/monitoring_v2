@@ -318,6 +318,14 @@ let argZaznam = {
         config.plugins = [];
         page.gg=config;
         
+        if (page.myChart && typeof page.myChart.destroy === "function") {
+            try {
+                page.myChart.destroy();
+            } catch (e) {
+                console.warn("Failed to destroy previous chart: ", e);
+            }
+        }
+        
         let myChart = new Chart(ctx, config);
         page.myChart = myChart;
 

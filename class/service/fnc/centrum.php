@@ -265,7 +265,9 @@ class centrum extends \service\baseExtend {
             
             
 
-            if(!@$this->parameter["from"] || !@$this->parameter["to"]){
+            $from = @$this->parameter["from"];
+            $to = @$this->parameter["to"];
+            if(!$from || !$to){
                 $to = (new \DateTime())->format("Y-m-d");
                 $from = (new \DateTime())->modify((($this->defaultRange-1) * -1)." day")->format("Y-m-d");
             }
