@@ -500,9 +500,11 @@ class service extends \service\baseExtend {
     }
     
     
-    private function cameraStatus($mediaServer,$ident){
+    private function cameraStatus($mediaServer,$ident,$oid=null){
 
-            $url = "http://$mediaServer/q/getStreamingStatus";
+            $hostOnly = explode(':', $mediaServer)[0];
+            $userPass = ($hostOnly === '100.96.237.26') ? 'master:93hdts76@' : '';
+            $url = "http://{$userPass}{$mediaServer}/q/getStreamingStatus";
 
             $data = array("url"=>$url);
             $result = $this->sendServerData($data, "get_url");
@@ -515,9 +517,39 @@ class service extends \service\baseExtend {
             $x = $result["body"];
             $x = json_decode($x, true);
             
+            if (isset($x["servers"]) && is_array($x["servers"])) {
+                foreach ($x["servers"] as &$item) {
+                    if (empty($item["ident"]) && !empty($item["type"])) {
+                        $item["ident"] = $item["type"];
+                    }
+                }
+            } else {
+                return null;
+            }
+
             $v = array_filter($x["servers"], function($item) use($ident){
                 return $ident==$item["ident"];
             });
+
+            if(!$v){
+                if ($oid !== null) {
+                    $cameraList = $this->cameraList($mediaServer);
+                    if (isset($cameraList["list"]) && is_array($cameraList["list"])) {
+                        $cam = null;
+                        foreach ($cameraList["list"] as $cItem) {
+                            if ($cItem["id"] == $oid) {
+                                $cam = $cItem;
+                                break;
+                            }
+                        }
+                        if ($cam !== null && !empty($cam["name"])) {
+                            $v = array_filter($x["servers"], function($item) use($cam){
+                                return $cam["name"] == $item["type"] || $cam["name"] == $item["ident"];
+                            });
+                        }
+                    }
+                }
+            }
 
             if(!$v){
                 return null;
@@ -532,7 +564,9 @@ class service extends \service\baseExtend {
     }
     
     private function cameraList($mediaServer){
-        $url = "http://$mediaServer/q.json?cmd=getObjects";
+        $hostOnly = explode(':', $mediaServer)[0];
+        $userPass = ($hostOnly === '100.96.237.26') ? 'master:93hdts76@' : '';
+        $url = "http://{$userPass}{$mediaServer}/q.json?cmd=getObjects";
         $data = array("url"=>$url);  
                 
         $result = $this->sendServerData($data, "get_url");
@@ -560,9 +594,12 @@ class service extends \service\baseExtend {
     
     
     private function cameraStart($mediaServer,$ident,$oid,$ot){
-
-        // Updated with local admin credentials and the correct API serverIndex parameter
-        $url = "http://master:93hdts76@$mediaServer/q.json?cmd=start-rtmp&oid=$oid&ot=$ot&serverIndex=0";
+        $hostOnly = explode(':', $mediaServer)[0];
+        if ($hostOnly === '100.96.237.26') {
+            $url = "http://master:93hdts76@$mediaServer/q.json?cmd=start-rtmp&oid=$oid&ot=$ot&serverIndex=0";
+        } else {
+            $url = "http://$mediaServer/q.json?cmd=start-rtmp&ident=$ident&oid=$oid&ot=$ot";
+        }
 
         $data = array("url"=>$url);
         $result = $this->sendServerData($data, "get_url");
@@ -626,7 +663,9 @@ class service extends \service\baseExtend {
         
         
         $mediaServer = $this->parameter["server"];
-        $data = array("url"=>"http://$mediaServer/q/getStreamingStatus");
+        $hostOnly = explode(':', $mediaServer)[0];
+        $userPass = ($hostOnly === '100.96.237.26') ? 'master:93hdts76@' : '';
+        $data = array("url"=>"http://{$userPass}{$mediaServer}/q/getStreamingStatus");
         $result = $this->sendServerData($data, "get_url");
         if(is_array($result)){
             return $this->output($result);
@@ -636,6 +675,13 @@ class service extends \service\baseExtend {
         $x = $result["body"];
         $x = json_decode($x, true);
         
+        if (isset($x["servers"]) && is_array($x["servers"])) {
+            foreach ($x["servers"] as &$item) {
+                if (empty($item["ident"]) && !empty($item["type"])) {
+                    $item["ident"] = $item["type"];
+                }
+            }
+        }
         
         return $this->output($x);
         
@@ -669,14 +715,14 @@ class service extends \service\baseExtend {
         $cameraList = $this->cameraList($mediaServer);
         
         
-        $c = $this->cameraStatus($mediaServer,$ident);
+        $c = $this->cameraStatus($mediaServer,$ident,$oid);
         if($c["status"]==false){
             $g = $this->cameraStart($mediaServer,$ident, $oid,$ot);
             return $this->output($g);
             
         }
         
-        $status = $this->cameraStatus($mediaServer,$ident);
+        $status = $this->cameraStatus($mediaServer,$ident,$oid);
         
         
         
