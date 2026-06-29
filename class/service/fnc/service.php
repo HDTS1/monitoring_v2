@@ -500,11 +500,16 @@ class service extends \service\baseExtend {
     }
     
     
+    private function getNvrBaseUrl($mediaServer) {
+        if (strpos($mediaServer, '@') !== false) {
+            return "http://$mediaServer";
+        }
+        return "http://master:93hdts76@$mediaServer";
+    }
+
     private function cameraStatus($mediaServer,$ident,$oid=null){
 
-            $hostOnly = explode(':', $mediaServer)[0];
-            $userPass = ($hostOnly === '100.96.237.26') ? 'master:93hdts76@' : '';
-            $url = "http://{$userPass}{$mediaServer}/q/getStreamingStatus";
+            $url = $this->getNvrBaseUrl($mediaServer) . "/q/getStreamingStatus";
 
             $data = array("url"=>$url);
             $result = $this->sendServerData($data, "get_url");
@@ -519,6 +524,10 @@ class service extends \service\baseExtend {
             
             if (isset($x["servers"]) && is_array($x["servers"])) {
                 foreach ($x["servers"] as &$item) {
+                    if (empty($item["type"]) && !empty($item["url"])) {
+                        $parts = explode('/', $item["url"]);
+                        $item["type"] = end($parts);
+                    }
                     if (empty($item["ident"]) && !empty($item["type"])) {
                         $item["ident"] = $item["type"];
                     }
@@ -564,9 +573,7 @@ class service extends \service\baseExtend {
     }
     
     private function cameraList($mediaServer){
-        $hostOnly = explode(':', $mediaServer)[0];
-        $userPass = ($hostOnly === '100.96.237.26') ? 'master:93hdts76@' : '';
-        $url = "http://{$userPass}{$mediaServer}/q.json?cmd=getObjects";
+        $url = $this->getNvrBaseUrl($mediaServer) . "/q.json?cmd=getObjects";
         $data = array("url"=>$url);  
                 
         $result = $this->sendServerData($data, "get_url");
@@ -594,12 +601,7 @@ class service extends \service\baseExtend {
     
     
     private function cameraStart($mediaServer,$ident,$oid,$ot){
-        $hostOnly = explode(':', $mediaServer)[0];
-        if ($hostOnly === '100.96.237.26') {
-            $url = "http://master:93hdts76@$mediaServer/q.json?cmd=start-rtmp&oid=$oid&ot=$ot&serverIndex=0";
-        } else {
-            $url = "http://$mediaServer/q.json?cmd=start-rtmp&ident=$ident&oid=$oid&ot=$ot";
-        }
+        $url = $this->getNvrBaseUrl($mediaServer) . "/q.json?cmd=start-rtmp&oid=$oid&ot=$ot&serverIndex=0";
 
         $data = array("url"=>$url);
         $result = $this->sendServerData($data, "get_url");
@@ -620,7 +622,7 @@ class service extends \service\baseExtend {
 
     private function cameraWebm($mediaServer,$oids,$backColor="rgb(0,0,0)",$size="320x240",$viewIndex=1){
 
-            $url = "http://$mediaServer/video.webm";
+            $url = $this->getNvrBaseUrl($mediaServer) . "/video.webm";
 
             $data = array(
                 "oids"=>$oids,
@@ -663,9 +665,7 @@ class service extends \service\baseExtend {
         
         
         $mediaServer = $this->parameter["server"];
-        $hostOnly = explode(':', $mediaServer)[0];
-        $userPass = ($hostOnly === '100.96.237.26') ? 'master:93hdts76@' : '';
-        $data = array("url"=>"http://{$userPass}{$mediaServer}/q/getStreamingStatus");
+        $data = array("url"=>$this->getNvrBaseUrl($mediaServer) . "/q/getStreamingStatus");
         $result = $this->sendServerData($data, "get_url");
         if(is_array($result)){
             return $this->output($result);
@@ -677,6 +677,10 @@ class service extends \service\baseExtend {
         
         if (isset($x["servers"]) && is_array($x["servers"])) {
             foreach ($x["servers"] as &$item) {
+                if (empty($item["type"]) && !empty($item["url"])) {
+                    $parts = explode('/', $item["url"]);
+                    $item["type"] = end($parts);
+                }
                 if (empty($item["ident"]) && !empty($item["type"])) {
                     $item["ident"] = $item["type"];
                 }

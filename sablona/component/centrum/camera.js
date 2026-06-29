@@ -67,8 +67,20 @@
             });
 
             player.ready(function() {
-                player.play();
-                $(el).remove();
+                player.load();
+                var playPromise = player.play();
+                if (playPromise !== undefined && typeof playPromise.then === 'function') {
+                    playPromise.then(function() {
+                        console.log("Playback started successfully");
+                        $(el).remove();
+                    }).catch(function(error) {
+                        console.log("Playback failed, removing overlay:", error);
+                        $(el).remove();
+                    });
+                } else {
+                    console.log("Playback started (no Promise returned)");
+                    $(el).remove();
+                }
             });
             
 
