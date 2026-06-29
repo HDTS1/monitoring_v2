@@ -561,22 +561,23 @@ class service extends \service\baseExtend {
     
     private function cameraStart($mediaServer,$ident,$oid,$ot){
 
-            $url = "http://$mediaServer/q.json?cmd=start-rtmp&ident=$ident&oid=$oid&ot=$ot";
+        // Updated with local admin credentials and the correct API serverIndex parameter
+        $url = "http://master:93hdts76@$mediaServer/q.json?cmd=start-rtmp&oid=$oid&ot=$ot&serverIndex=0";
 
-            $data = array("url"=>$url);
-            $result = $this->sendServerData($data, "get_url");
-            if(is_array($result)){
-                return $this->output($result);
-            }
+        $data = array("url"=>$url);
+        $result = $this->sendServerData($data, "get_url");
+        if(is_array($result)){
+            return $this->output($result);
+        }
 
-            $result = json_decode($result, true);
+        $result = json_decode($result, true);
 
-            $x = $result["body"];
-            $x = json_decode($x, true);
-            sleep(10);
+        $x = $result["body"];
+        $x = json_decode($x, true);
+        sleep(10);
             
-            $x["cmd"]=$url;
-            return $x;
+        $x["cmd"]=$url;
+        return $x;
     }
     
 
